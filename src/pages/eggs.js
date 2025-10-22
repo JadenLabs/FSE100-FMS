@@ -46,7 +46,6 @@ class EggsPage extends Page {
     text("Score: " + this.score, canvas.x - 145, canvas.y - 315);
 
     for (const egg of this.eggs) {
-      console.log(egg);
       egg.show();
     }
   }
