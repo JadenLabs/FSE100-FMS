@@ -6,13 +6,13 @@ class EggButton extends Button {
     this.y = y;
     this.w = w;
     this.h = h;
-
     this.onClick = () => {
       this.score = this.score + 100;
-    };
+    }
   }
 
   show() {
+    console.log("showing egg");
     image(eggImg, this.x, this.y, this.w, this.h);
   }
 }
