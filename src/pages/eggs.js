@@ -13,20 +13,41 @@ class EggsPage extends Page {
 
     this.drawables.push(this.backButton);
     this.clickables.push(this.backButton);
+
+    this.score = 100;
+    this.eggs = [];
+    this.createEgg(
+      Math.floor(random(canvas.x)),
+      Math.floor(random(canvas.y)),
+      50,
+      55
+    );
+  }
+
+  createEgg(x, y, w, h) {
+    let egg = new EggButton({ x, y, w, h });
+    this.eggs.push(egg);
+    this.drawables.push(egg);
+    this.clickables.push(egg);
+    console.log(this.eggs);
+    console.log(egg);
   }
 
   enter() {
     super.enter();
     rectMode(CENTER);
     textAlign(CENTER, CENTER);
-    
   }
 
   show() {
     image(backgroundImg, 0, 0, canvas.x, canvas.y);
     drawGameTitle({ title: "Eggs", widthOffset: 90, yOffset: -20 });
     this.backButton.show();
-    let score = 0;
-    text("Score: "+score, 45, 55);
+    text("Score: " + this.score, canvas.x - 145, canvas.y - 315);
+
+    for (const egg of this.eggs) {
+      console.log(egg);
+      egg.show();
+    }
   }
 }

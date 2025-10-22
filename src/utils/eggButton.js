@@ -1,16 +1,17 @@
-class eggButton extends Button {
+class EggButton extends Button {
   constructor({ x, y, w, h }) {
-    super({ x, y, w, h, onClick: () => {} });
+    super({ x, y, w, h, onClick: () => { } });
 
     this.x = x;
     this.y = y;
     this.w = w;
     this.h = h;
 
-    image(eggImg, x, y, w, h);
+    this.onClick = () => {
+      this.score = this.score + 100;
+    }
   }
 }
-
-function preload() {
-  eggImg = loadImage("assets/egg.jpg");
+show(){
+  image(eggImg, this.x, this.y, this.w, this.h);
 }
