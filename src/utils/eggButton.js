@@ -1,6 +1,6 @@
 class EggButton extends Button {
   constructor({ x, y, w, h }) {
-    super({ x, y, w, h, onClick: () => {} });
+    super({ x, y, w, h, onClick: () => { } });
 
     this.x = x;
     this.y = y;
@@ -8,6 +8,8 @@ class EggButton extends Button {
     this.h = h;
     this.onClick = () => {
       this.score = this.score + 100;
+      this.x = random(50, canvas.x - 50);
+      this.y = random(50, canvas.y - 50);
     }
   }
 
