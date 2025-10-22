@@ -2,6 +2,10 @@
 
 ---
 
+## Prerequisites
+- Visual Studio Code
+- Git CLI
+
 ## Installation
 
 1. [Download git](https://git-scm.com/install/windows) on your local system
