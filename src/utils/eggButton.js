@@ -7,10 +7,10 @@ class eggButton extends Button {
     this.w = w;
     this.h = h;
 
-    image(eggImg, x, y, w, h);
+    
   }
-}
 
-function preload() {
-  eggImg = loadImage("assets/egg.jpg");
+  show(){
+  image(eggImg, this.x, this.y, this.w, this.h);
+  }
 }

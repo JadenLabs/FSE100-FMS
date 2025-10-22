@@ -14,12 +14,13 @@ function changePage(id) {
 // Stuff done before calling setup
 function preload() {
   backgroundImg = loadImage("assets/background.jpg");
+  eggImg = loadImage("assets/egg.png");
 }
 
 // Drawings to only call once
 function setup() {
-  pages = { 
-    main: new MainPage(), 
+  pages = {
+    main: new MainPage(),
     eggs: new EggsPage(),
     astroid: new AstroidPage(),
     maze: new MazePage(),
