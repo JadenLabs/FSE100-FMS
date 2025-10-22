@@ -1,4 +1,4 @@
-class eggButton extends Button {
+class EggButton extends Button {
   constructor({ x, y, w, h }) {
     super({ x, y, w, h, onClick: () => {} });
 
@@ -7,10 +7,11 @@ class eggButton extends Button {
     this.w = w;
     this.h = h;
 
-    
+    console.log("im gonna goon")
   }
 
-  show(){
-  image(eggImg, this.x, this.y, this.w, this.h);
+  show() {
+    console.log("showing egg");
+    image(eggImg, this.x, this.y, this.w, this.h);
   }
 }
