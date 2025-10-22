@@ -5,6 +5,12 @@ let pages = {};
 let active_page;
 let nextPage;
 let difficulty;
+let pageLastClicked;
+
+// Check if a page was clicked after N time
+function pageClickedWithin(ms) {
+  return Date.now() - pageLastClicked < ms;
+}
 
 // Function to change pages
 function changePage(id) {

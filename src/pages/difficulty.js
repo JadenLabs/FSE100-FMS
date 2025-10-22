@@ -19,7 +19,10 @@ class DifficultyPage extends Page {
         buttonText: "Easy",
         buttonColor: "#8BC34A",
         hoverColor: "#76A53F",
-        onClick: () => { changePage(nextPage); nextPage = null; },
+        onClick: () => {
+          changePage(nextPage);
+          nextPage = null;
+        },
       }),
       new DifficultyButton({
         x: canvas.m.x,
@@ -27,7 +30,10 @@ class DifficultyPage extends Page {
         buttonText: "Medium",
         buttonColor: "#CCAE4F",
         hoverColor: "#B79C47",
-        onClick: () => { changePage(nextPage); nextPage = null; },
+        onClick: () => {
+          changePage(nextPage);
+          nextPage = null;
+        },
       }),
       new DifficultyButton({
         x: canvas.q[1].x,
@@ -35,7 +41,10 @@ class DifficultyPage extends Page {
         buttonText: "Hard",
         buttonColor: "#C6635D",
         hoverColor: "#B65B56",
-        onClick: () => { changePage(nextPage); nextPage = null; },
+        onClick: () => {
+          changePage(nextPage);
+          nextPage = null;
+        },
       }),
     ];
 
