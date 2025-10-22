@@ -22,7 +22,7 @@
 
 Depending on what you have installed on your system, you can following methods:
 
-**Option 1 - VSC Liveserver:**
+**Option 1 - VSC Liveserver:** *(recommended)*
 
 1. Install the **liveserver** plugin for VS Code
 2. Right click on `index.html` in the files and click `Open with Live Server`
