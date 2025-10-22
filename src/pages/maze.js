@@ -23,6 +23,9 @@ class MazePage extends Page {
 
   show() {
     image(backgroundImg, 0, 0, canvas.x, canvas.y);
+ // the maze image
+  image(mazeEasyImg, 0, 0, canvas.x, canvas.y);
+
     drawGameTitle({ title: "Maze", widthOffset: 90, yOffset: -20 });
     this.backButton.show();
   }
