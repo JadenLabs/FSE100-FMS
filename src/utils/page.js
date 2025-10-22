@@ -26,6 +26,9 @@ class Page {
         clickable.contains?.(mouseX, mouseY) &&
         mouseIsPressed
       ) {
+        if (pageClickedWithin(200)) return;
+
+        pageLastClicked = Date.now();
         clickable.handleClick();
       }
     }
