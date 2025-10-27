@@ -1,3 +1,8 @@
+/**
+ * ENTRY POINT FOR THE PROJECT
+ */
+
+// Global variables
 let canvas = new Canvas(720, 360);
 
 let drawables = [];
@@ -18,6 +23,7 @@ function changePage(id) {
 }
 
 // Stuff done before calling setup
+// LOAD IMAGES HERE
 function preload() {
   backgroundImg = loadImage("assets/background.jpg");
    mazeEasyImg = loadImage("assets/mazeasy.jpg");
