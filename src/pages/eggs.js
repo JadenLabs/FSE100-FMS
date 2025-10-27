@@ -50,3 +50,22 @@ class EggsPage extends Page {
     }
   }
 }
+
+class EggButton extends Button {
+  constructor({ x, y, w, h }) {
+    super({ x, y, w, h, onClick: () => {} });
+
+    this.x = x;
+    this.y = y;
+    this.w = w;
+    this.h = h;
+    this.onClick = () => {
+      this.score = this.score + 100;
+    };
+  }
+
+  show() {
+    console.log("showing egg");
+    image(eggImg, this.x, this.y, this.w - 5, this.h - 5);
+  }
+}
