@@ -29,6 +29,7 @@ function changePage(id) {
 function preload() {
   backgroundImg = loadImage("assets/background.jpg");
   mazebg = loadImage("assets/mazebg.png");
+  maze1 = loadImage("assets/maze1.png");
   eggImg = loadImage("assets/egg.png");
   backButton = loadImage("assets/backbutton.png");
   asteroid = loadImage("assets/asteroid.png");
