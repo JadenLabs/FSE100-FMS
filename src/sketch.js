@@ -20,8 +20,9 @@ function changePage(id) {
 // Stuff done before calling setup
 function preload() {
   backgroundImg = loadImage("assets/background.jpg");
-   mazeEasyImg = loadImage("assets/mazeasy.jpg");
+  mazebg = loadImage("assets/mazebg.png");
    eggImg = loadImage("assets/egg.png");
+   
 }
 
 // Drawings to only call once
