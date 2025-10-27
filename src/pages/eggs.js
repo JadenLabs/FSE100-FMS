@@ -43,7 +43,7 @@ class EggsPage extends Page {
     image(backgroundImg, 0, 0, canvas.x, canvas.y);
     drawGameTitle({ title: "Eggs", widthOffset: 90, yOffset: -20 });
     this.backButton.show();
-    text("Score: " + this.score, canvas.x - 145, canvas.y - 315);
+    
 
     for (const egg of this.eggs) {
       egg.show();
@@ -53,12 +53,13 @@ class EggsPage extends Page {
 
 class EggButton extends Button {
   constructor({ x, y, w, h }) {
-    super({ x, y, w, h, onClick: () => {} });
+    super({ x, y, w, h, onClick: () => { } });
 
     this.x = x;
     this.y = y;
     this.w = w;
     this.h = h;
+    this.score = 0;
     this.onClick = () => {
       this.score = this.score + 100;
       this.x = random(50, canvas.x - 50);
@@ -68,6 +69,7 @@ class EggButton extends Button {
 
   show() {
     console.log("showing egg");
-    image(eggImg, this.x, this.y, this.w - 5, this.h - 5);
+    image(eggImg, this.x, this.y, this.w - 8, this.h - 8);
+    text("Score: " + this.score, canvas.x - 145, canvas.y - 315);
   }
 }
