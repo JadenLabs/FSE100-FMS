@@ -53,6 +53,8 @@ class EggsPage extends Page {
     for (const egg of this.eggs) {
       egg.show();
     }
+
+    text("Score: " + this.score, canvas.x - 145, canvas.y - 315);
   }
 }
 
@@ -70,6 +72,5 @@ class EggButton extends Button {
   show() {
     console.log("showing egg");
     image(eggImg, this.x, this.y, this.w - 8, this.h - 8);
-    text("Score: " + this.score, canvas.x - 145, canvas.y - 315);
   }
 }
