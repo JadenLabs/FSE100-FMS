@@ -25,12 +25,18 @@ class EggsPage extends Page {
   }
 
   createEgg(x, y, w, h) {
-    let egg = new EggButton({ x, y, w, h });
+    let egg = new EggButton({ x, y, w, h, parent: this });
     this.eggs.push(egg);
     this.drawables.push(egg);
     this.clickables.push(egg);
     console.log(this.eggs);
     console.log(egg);
+  }
+
+  onEggClicked(egg) {
+    this.score += 100;
+    egg.x = Math.floor(random(50, canvas.x - 50));
+    egg.y = Math.floor(random(50, canvas.y - 50));
   }
 
   enter() {
@@ -43,7 +49,6 @@ class EggsPage extends Page {
     image(backgroundImg, 0, 0, canvas.x, canvas.y);
     drawGameTitle({ title: "Eggs", widthOffset: 90, yOffset: -20 });
     this.backButton.show();
-    
 
     for (const egg of this.eggs) {
       egg.show();
@@ -52,8 +57,8 @@ class EggsPage extends Page {
 }
 
 class EggButton extends Button {
-  constructor({ x, y, w, h }) {
-    super({ x, y, w, h, onClick: () => { } });
+  constructor({ x, y, w, h, parent }) {
+    super({ x, y, w, h, onClick: () => { parent.onEggClicked(this); } });
 
     this.x = x;
     this.y = y;
