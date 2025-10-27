@@ -64,12 +64,7 @@ class EggButton extends Button {
     this.y = y;
     this.w = w;
     this.h = h;
-    this.score = 0;
-    this.onClick = () => {
-      this.score = this.score + 100;
-      this.x = random(50, canvas.x - 50);
-      this.y = random(50, canvas.y - 50);
-    };
+    this.parent = parent;
   }
 
   show() {
