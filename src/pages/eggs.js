@@ -7,6 +7,7 @@ class EggsPage extends Page {
       h: 45,
       w: 45,
       onClick: () => {
+        this.score = 0;
         changePage("main");
       },
     });
@@ -71,6 +72,6 @@ class EggButton extends Button {
 
   show() {
     console.log("showing egg");
-    image(eggImg, this.x, this.y, this.w - 8, this.h - 8);
+    image(eggImg, this.x-(this.w/2), this.y-(this.h/2), this.w, this.h);
   }
 }
