@@ -1,10 +1,9 @@
 class BackButton extends Button {
   constructor({ x, y, w, h, onClick = () => {} }) {
-    super({ x, y, w, h, onClick});
-    this.egg = new DinoEgg(x, y, w, y);
+    super({ x, y, w, h, onClick });
   }
-  
+
   show() {
-    this.egg.show();
+    image(backButton, this.x - this.w / 2, this.y - this.h / 2, this.w, this.h);
   }
 }
