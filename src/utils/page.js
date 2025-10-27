@@ -26,7 +26,7 @@ class Page {
         clickable.contains?.(mouseX, mouseY) &&
         mouseIsPressed
       ) {
-        if (pageClickedWithin(200)) return;
+        if (pageClickedWithin(300)) return;
 
         pageLastClicked = Date.now();
         clickable.handleClick();

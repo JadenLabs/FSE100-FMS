@@ -7,7 +7,7 @@ class MainPage extends Page {
 
     this.gameButtons = [
       new MainMenuButton({
-        x: canvas.m.x - 200,
+        x: canvas.q[0].x,
         y: canvas.m.y,
         buttonColor: "#FFAB49",
         hoverColor: "#C98537",
@@ -23,7 +23,7 @@ class MainPage extends Page {
         onClick: () => { changePage("difficulty"); nextPage = "astroid"; },
       }),
       new MainMenuButton({
-        x: canvas.m.x + 200,
+        x: canvas.q[1].x,
         y: canvas.m.y,
         buttonColor: "#ABBC3C",
         hoverColor: "#919F35",
