@@ -36,6 +36,7 @@ function preload() {
   asteroid = loadImage("assets/asteroid.png");
   stars = loadImage("assets/stars.png");
   heart = loadImage("assets/heart.webp");
+  asteroidbg = loadImage("assets/asteroidBackground.png");
 }
 
 
