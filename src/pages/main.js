@@ -19,8 +19,8 @@ class MainPage extends Page {
         y: canvas.m.y,
         buttonColor: "#7EA0A1",
         hoverColor: "#627C7C",
-        buttonText: "Astroid",
-        onClick: () => { changePage("difficulty"); nextPage = "astroid"; },
+        buttonText: "Asteroid",
+        onClick: () => { changePage("difficulty"); nextPage = "asteroid"; },
       }),
       new MainMenuButton({
         x: canvas.q[1].x,
@@ -50,7 +50,7 @@ class MainPage extends Page {
    */
   show() {
     image(backgroundImg, 0, 0, canvas.x, canvas.y);
-    drawGameTitle({title: "Dinosaur Island"});
+    drawGameTitle({title: "Dinosaur Island", yOffset: -20});
 
     for (const button of this.gameButtons) {
       button.show();

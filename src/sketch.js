@@ -5,6 +5,7 @@
 // Global variables
 let canvas = new Canvas(720, 360);
 
+const FPS = 30;
 let drawables = [];
 let pages = {};
 let active_page;
@@ -19,6 +20,7 @@ function pageClickedWithin(ms) {
 
 // Function to change pages
 function changePage(id) {
+  if (active_page) active_page.exit();
   active_page = pages[id];
 }
 
@@ -30,6 +32,7 @@ function preload() {
   maze1 = loadImage("assets/maze1.png");
   eggImg = loadImage("assets/egg.png");
   backButton = loadImage("assets/backbutton.png");
+  asteroid = loadImage("assets/asteroid.png");
 }
 
 // Drawings to only call once
@@ -37,13 +40,14 @@ function setup() {
   pages = {
     main: new MainPage(),
     eggs: new EggsPage(),
-    astroid: new AstroidPage(),
     maze: new MazePage(),
     difficulty: new DifficultyPage(),
+    asteroid: new AsteroidPage(),
   };
-  active_page = pages.main;
+  changePage("main");
 
-  createCanvas(canvas.x, canvas.y);
+  const cnv = createCanvas(canvas.x, canvas.y);
+  cnv.parent("game");
   rectMode(CENTER);
   textAlign(CENTER, CENTER);
 }
