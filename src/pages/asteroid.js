@@ -1,7 +1,7 @@
 class AsteroidPage extends Page {
-  constructor() {
-    super("asteroid");
-    this.backButton = new BackButton();
+    constructor() {
+        super("asteroid");
+        this.backButton = new BackButton();
 
     this.asteroid_radius = 23;
     this.asteroids = [];
@@ -14,15 +14,15 @@ class AsteroidPage extends Page {
 
     this.lives = 3; // change based on difficulty
 
-    this.drawables.push(this.backButton);
-    this.clickables.push(this.backButton);
-  }
+        this.drawables.push(this.backButton);
+        this.clickables.push(this.backButton);
+    }
 
-  enter() {
-    super.enter();
-    rectMode(CENTER);
-    textAlign(CENTER, CENTER);
-  }
+    enter() {
+        super.enter();
+        rectMode(CENTER);
+        textAlign(CENTER, CENTER);
+    }
 
   show() {
     image(asteroidbg, 0, 0, canvas.x, canvas.y);
@@ -80,24 +80,24 @@ class Asteroid {
     // TODO draw a trail
   }
 
-  draw() {
-    image(asteroid, this.x, this.y, this.radius * 2, this.radius * 2);
-  }
+    draw() {
+        image(asteroid, this.x, this.y, this.radius * 2, this.radius * 2);
+    }
 }
 
 class Player {
-  constructor(x, y, w, h) {
-    Object.assign(this, { x, y, w, h });
-  }
+    constructor(x, y, w, h) {
+        Object.assign(this, { x, y, w, h });
+    }
 
-  update() {
-    this.draw();
-  }
+    update() {
+        this.draw();
+    }
 
-  draw() {
-    fill(255);
-    image(eggImg, this.x - this.w / 2, this.y - this.h / 2, this.w, this.h);
-  }
+    draw() {
+        fill(255);
+        image(eggImg, this.x - this.w / 2, this.y - this.h / 2, this.w, this.h);
+    }
 }
 
 function checkCollion(asteroid, player) {
