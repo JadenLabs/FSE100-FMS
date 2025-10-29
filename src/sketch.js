@@ -33,6 +33,7 @@ function preload() {
   eggImg = loadImage("assets/egg.png");
   backButton = loadImage("assets/backbutton.png");
   asteroid = loadImage("assets/asteroid.png");
+  asteroidbg = loadImage("assets/asteroidBackground.png");
 }
 
 // Drawings to only call once
