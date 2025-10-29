@@ -1,5 +1,13 @@
 class BackButton extends Button {
-  constructor({ x, y, w, h, onClick = () => {} }) {
+  constructor({
+    x = 40,
+    y = 30,
+    h = 45,
+    w = 55,
+    onClick = () => {
+      changePage("main");
+    },
+  } = {}) {
     super({ x, y, w, h, onClick });
   }
 

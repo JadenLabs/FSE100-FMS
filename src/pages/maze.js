@@ -1,15 +1,7 @@
 class MazePage extends Page {
   constructor() {
     super("maze");
-    this.backButton = new BackButton({
-      x: 40,
-      y: 30,
-      h: 45,
-      w: 45,
-      onClick: () => {
-        changePage("main");
-      },
-    });
+    this.backButton = new BackButton();
 
     this.drawables.push(this.backButton);
     this.clickables.push(this.backButton);
