@@ -1,5 +1,5 @@
 class DifficultyPage extends Page {
-  constructor(childPage) {
+  constructor() {
     super("difficulty");
 
     this.backButton = new BackButton({
@@ -20,6 +20,7 @@ class DifficultyPage extends Page {
         buttonColor: "#8BC34A",
         hoverColor: "#76A53F",
         onClick: () => {
+          difficulty = "easy";
           changePage(nextPage);
           nextPage = null;
         },
@@ -31,6 +32,7 @@ class DifficultyPage extends Page {
         buttonColor: "#CCAE4F",
         hoverColor: "#B79C47",
         onClick: () => {
+          difficulty = "medium";
           changePage(nextPage);
           nextPage = null;
         },
@@ -42,6 +44,7 @@ class DifficultyPage extends Page {
         buttonColor: "#C6635D",
         hoverColor: "#B65B56",
         onClick: () => {
+          difficulty = "hard";
           changePage(nextPage);
           nextPage = null;
         },
