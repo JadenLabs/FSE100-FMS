@@ -5,6 +5,8 @@ class MazePage extends Page {
 
     this.drawables.push(this.backButton);
     this.clickables.push(this.backButton);
+    
+    this.trailLayer = createGraphics(canvas.x, canvas.y);
   }
 
   enter() {
@@ -34,12 +36,19 @@ class MazePage extends Page {
  
   const isWall = red(c) < 50 && green(c) < 50 && blue(c) < 50;
 
+if (isWall) {
+  this.trailLayer.clear();
+}
   
-  
-  stroke(255);          
-  strokeWeight(1);
-  fill(isWall ? "red" : "orange");
-  circle(mx, my, 13);
+if (mouseIsPressed) {
+      this.trailLayer.noStroke();
+  this.trailLayer.fill(isWall ? "red" : "orange");
+  this.trailLayer.circle(mx, my, 13);
+  }
+
+image(this.trailLayer, 0, 0);
+
+
 
 
    
