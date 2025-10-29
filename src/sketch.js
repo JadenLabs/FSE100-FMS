@@ -28,8 +28,8 @@ function preload() {
   backgroundImg = loadImage("assets/background.jpg");
   mazebg = loadImage("assets/mazebg.png");
   maze1 = loadImage("assets/maze1.png");
-   eggImg = loadImage("assets/egg.png");
-   
+  eggImg = loadImage("assets/egg.png");
+  backButton = loadImage("assets/backbutton.png");
 }
 
 // Drawings to only call once
