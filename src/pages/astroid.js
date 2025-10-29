@@ -27,3 +27,13 @@ class AstroidPage extends Page {
     this.backButton.show();
   }
 }
+
+class Astroid {
+  constructor(x, y, radius, velocity) {
+    Object.assign(this, { x, y, radius, velocity });
+  }
+
+  update() {}
+
+  draw() {}
+}
