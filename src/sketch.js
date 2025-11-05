@@ -33,7 +33,9 @@ function preload() {
   eggImg = loadImage("assets/egg.png");
   backButton = loadImage("assets/backbutton.png");
   asteroid = loadImage("assets/asteroid.png");
+  heart = loadImage("assets/heart.webp");
 }
+
 
 // Drawings to only call once
 function setup() {

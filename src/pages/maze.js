@@ -7,6 +7,9 @@ class MazePage extends Page {
     this.clickables.push(this.backButton);
     
     this.trailLayer = createGraphics(canvas.x, canvas.y);
+   
+    this.maxHearts = 3;
+    this.hearts = this.maxHearts;
   }
 
   enter() {
@@ -36,15 +39,21 @@ class MazePage extends Page {
  
   const isWall = red(c) < 50 && green(c) < 50 && blue(c) < 50;
 
-if (isWall) {
-  this.trailLayer.clear();
-}
+
   
-if (mouseIsPressed) {
+if (isWall && mouseIsPressed) {
+      if (this.hearts > 0) {
+        this.hearts -= 1;
+      }
+      this.trailLayer.clear(); // optional reset
+    }
+
+  
+  if (mouseIsPressed && this.hearts > 0) {
       this.trailLayer.noStroke();
-  this.trailLayer.fill(isWall ? "red" : "orange");
-  this.trailLayer.circle(mx, my, 13);
-  }
+      this.trailLayer.fill(isWall ? "red" : "orange");
+      this.trailLayer.circle(mx, my, 15);
+    }
 
 image(this.trailLayer, 0, 0);
 
@@ -53,5 +62,21 @@ image(this.trailLayer, 0, 0);
 
     drawGameTitle({ title: "Maze", widthOffset: 90, yOffset: -20 });
     this.backButton.show();
+     this.displayHearts();
   }
+
+    displayHearts() {
+    const heartSize = 40;
+    for (let i = 0; i < this.maxHearts; i++) {
+      const x = 40 + i * (heartSize + 10);
+      const y = 40;
+      if (i < this.hearts) {
+        image(heart, x, y, heartSize, heartSize); // uses your global heart image
+      } else {
+        tint(255, 100); // faded hearty, heartSize, heartSize);
+        noTint();
+      }
+    }
+  }
+
 }
