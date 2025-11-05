@@ -91,6 +91,7 @@ class Asteroid {
         this.x += this.velocity.x;
         this.y += this.velocity.y;
         this.draw();
+        // TODO draw a trail
     }
 
     draw() {
@@ -141,8 +142,8 @@ function checkCollion(asteroid, player) {
     circle(x, y, 5);
     circle(ax, ay, 3);
     circle(px, py, 3);
-    line(ax, ay, x, y);
-    line(ax, ay, px, py);
+    // line(ax, ay, x, y);
+    // line(ax, ay, px, py);
 
     if (colliding) {
         console.log("COLLISION");
