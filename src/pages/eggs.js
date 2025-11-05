@@ -17,6 +17,8 @@ class EggsPage extends Page {
 
     this.score = 0;
     this.eggs = [];
+    console.log(difficulty+"!!");
+
     this.createEgg(
       Math.floor(random(canvas.x)),
       Math.floor(random(canvas.y)),
@@ -43,14 +45,20 @@ class EggsPage extends Page {
     this.eggs.push(egg);
     this.drawables.push(egg);
     this.clickables.push(egg);
-    console.log(this.eggs);
-    console.log(egg);
+
   }
 
   onEggClicked(egg) {
-    this.score += 100;
+    
+    if(egg.visible){
+      this.score += 100;
+      this.delayEgg(egg, random(500, 3000));
+    }
+    else{
+      this.score+=0;
+    }
     egg.visible = false;
-    this.delayEgg(egg, random(1000, 3000));
+    
   }
 
   delayEgg(egg, time) {
@@ -71,11 +79,9 @@ class EggsPage extends Page {
     image(backgroundImg, 0, 0, canvas.x, canvas.y);
     drawGameTitle({ title: "Eggs", widthOffset: 90, yOffset: -20 });
     this.backButton.show();
-
     for (const egg of this.eggs) {
       egg.show();
     }
-
     text("Score: " + this.score, canvas.x - 145, canvas.y - 315);
   }
 
