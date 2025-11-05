@@ -17,16 +17,45 @@ class EggsPage extends Page {
 
     this.score = 0;
     this.eggs = [];
-    console.log(difficulty+"!!");
+    this.scoreInc;
+    switch(difficulty){
 
+      case "easy":
+        console.log(difficulty);
+        this.scoreInc = 100;
+      this.createEgg(
+      Math.floor(random(canvas.x)),
+      Math.floor(random(canvas.y)),
+      50,
+      55
+    );
     this.createEgg(
       Math.floor(random(canvas.x)),
       Math.floor(random(canvas.y)),
       50,
       55
     );
+    this.createEgg(
+      Math.floor(random(canvas.x)),
+      Math.floor(random(canvas.y)),
+      50,
+      55
+    );
+        break;
 
-    this.createEgg(
+
+
+
+      case "medium":
+        console.log(difficulty);
+        this.scoreInc = 50;
+        this.createEgg(
+      Math.floor(random(canvas.x)),
+      Math.floor(random(canvas.y)),
+      50,
+      55
+    );
+        this.createEgg(
       Math.floor(random(canvas.x)),
       Math.floor(random(canvas.y)),
       50,
@@ -38,6 +67,53 @@ class EggsPage extends Page {
       50,
       55
     );
+    this.createEgg(
+      Math.floor(random(canvas.x)),
+      Math.floor(random(canvas.y)),
+      50,
+      55
+    );
+        break;
+
+
+
+
+      case "hard":
+        console.log(difficulty);
+        this.scoreInc = 25;
+        this.createEgg(
+      Math.floor(random(canvas.x)),
+      Math.floor(random(canvas.y)),
+      50,
+      55
+    );
+        this.createEgg(
+      Math.floor(random(canvas.x)),
+      Math.floor(random(canvas.y)),
+      50,
+      55
+    );
+    this.createEgg(
+      Math.floor(random(canvas.x)),
+      Math.floor(random(canvas.y)),
+      50,
+      55
+    );
+        this.createEgg(
+      Math.floor(random(canvas.x)),
+      Math.floor(random(canvas.y)),
+      50,
+      55
+    );
+    this.createEgg(
+      Math.floor(random(canvas.x)),
+      Math.floor(random(canvas.y)),
+      50,
+      55
+    );
+        break;
+    }
+
   }
 
   createEgg(x, y, w, h) {
@@ -51,7 +127,7 @@ class EggsPage extends Page {
   onEggClicked(egg) {
     
     if(egg.visible){
-      this.score += 100;
+      this.score += this.scoreInc;
       this.delayEgg(egg, random(500, 3000));
     }
     else{
@@ -65,15 +141,10 @@ class EggsPage extends Page {
     setTimeout(() => {
       egg.visible = true;
       egg.x = Math.floor(random(50, canvas.x - 50));
-      egg.y = Math.floor(random(50, canvas.y - 50));
+      egg.y = Math.floor(random(75, canvas.y - 50));
     }, time);
   }
 
-  enter() {
-    super.enter();
-    rectMode(CENTER);
-    textAlign(CENTER, CENTER);
-  }
 
   show() {
     image(backgroundImg, 0, 0, canvas.x, canvas.y);
