@@ -71,9 +71,8 @@ image(this.trailLayer, 0, 0);
       const x = 40 + i * (heartSize + 10);
       const y = 40;
       if (i < this.hearts) {
-        image(heart, x, y, heartSize, heartSize); // uses your global heart image
-      } else {
-        tint(255, 100); // faded hearty, heartSize, heartSize);
+        image(heart, x, y, heartSize, heartSize); 
+        tint(255, 100); 
         noTint();
       }
     }
