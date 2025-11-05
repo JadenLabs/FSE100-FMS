@@ -94,7 +94,10 @@ class EggButton extends Button {
   }
 
   show() {
-    if (!this.visible) return; // don't draw if hidden
+    if (!this.visible){
+      image(stars, this.x - (this.w/2)-10, this.y - (this.h/2), this.w+30, this.h+30);
+       return; // don't draw if hidden
+    }
     image(eggImg, this.x - this.w / 2, this.y - this.h / 2, this.w, this.h);
   }
 }
