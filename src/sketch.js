@@ -11,7 +11,7 @@ let pages = {};
 let active_page;
 let nextPage;
 let difficulty;
-let pageLastClicked;
+let pageLastClicked = Date.now();
 
 // Check if a page was clicked after N time
 function pageClickedWithin(ms) {
@@ -21,7 +21,8 @@ function pageClickedWithin(ms) {
 // Function to change pages
 function changePage(id) {
   if (active_page) active_page.exit();
-  active_page = pages[id];
+  active_page = new pages[id]();
+  active_page.enter();
 }
 
 // Stuff done before calling setup
@@ -41,11 +42,11 @@ function preload() {
 // Drawings to only call once
 function setup() {
   pages = {
-    main: new MainPage(),
-    eggs: new EggsPage(),
-    maze: new MazePage(),
-    difficulty: new DifficultyPage(),
-    asteroid: new AsteroidPage(),
+    main: MainPage,
+    eggs: EggsPage,
+    maze: MazePage,
+    difficulty: DifficultyPage,
+    asteroid: AsteroidPage,
   };
   changePage("main");
 
