@@ -51,7 +51,6 @@ image(this.trailLayer, 0, 0);
 
 
 
-   
     drawGameTitle({ title: "Maze", widthOffset: 90, yOffset: -20 });
     this.backButton.show();
   }
