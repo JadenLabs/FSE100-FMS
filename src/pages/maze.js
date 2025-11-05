@@ -1,7 +1,16 @@
 class MazePage extends Page {
   constructor() {
     super("maze");
-    this.backButton = new BackButton();
+       this.backButton = new BackButton({
+      x: 40,
+      y: 30,
+      h: 45,
+      w: 45,
+      onClick: () => {
+        this.hearts = this.maxHearts;
+        changePage("main");
+      },
+    });
 
     this.drawables.push(this.backButton);
     this.clickables.push(this.backButton);
@@ -10,6 +19,8 @@ class MazePage extends Page {
    
     this.maxHearts = 3;
     this.hearts = this.maxHearts;
+    this.canLoseHeart = true;
+    this.resetting = false;
   }
 
   enter() {
@@ -39,13 +50,16 @@ class MazePage extends Page {
  
   const isWall = red(c) < 50 && green(c) < 50 && blue(c) < 50;
 
-
   
-if (isWall && mouseIsPressed) {
-      if (this.hearts > 0) {
-        this.hearts -= 1;
-      }
-      this.trailLayer.clear(); // optional reset
+ if (isWall && mouseIsPressed && this.canLoseHeart && this.hearts > 0) {
+      this.hearts -= 1;
+      this.canLoseHeart = false;
+      this.trailLayer.clear();
+
+      
+      setTimeout(() => {
+        this.canLoseHeart = true;
+      }, 1000);
     }
 
   
@@ -68,11 +82,13 @@ image(this.trailLayer, 0, 0);
     displayHearts() {
     const heartSize = 40;
     for (let i = 0; i < this.maxHearts; i++) {
-      const x = 40 + i * (heartSize + 10);
-      const y = 40;
+      const x = 540 + i * (heartSize + 10);
+      const y = 90;
       if (i < this.hearts) {
         image(heart, x, y, heartSize, heartSize); 
+      } else {
         tint(255, 100); 
+        image(heart, x, y, heartSize, heartSize);
         noTint();
       }
     }
