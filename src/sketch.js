@@ -11,7 +11,7 @@ let pages = {};
 let active_page;
 let nextPage;
 let difficulty;
-let pageLastClicked;
+let pageLastClicked = Date.now();
 
 // Check if a page was clicked after N time
 function pageClickedWithin(ms) {

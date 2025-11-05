@@ -1,19 +1,18 @@
 class Page {
-  /**
-   * Ran the first time the object is created
-   */
   constructor(id) {
     this.id = id;
     this.drawables = [];
     this.clickables = [];
     this.active = false;
+
+    // track previous mouse state for edge detection
+    this._prevMousePressed = false;
   }
 
-  /**
-   * (OVERRIDE) Ran on each draw program call.
-   */
   update() {
     let hovering = false;
+    const nowPressed = !!mouseIsPressed;
+    const mouseJustPressed = nowPressed && !this._prevMousePressed;
 
     for (const drawable of this.drawables) {
       if (drawable.update) drawable.update();
@@ -21,38 +20,27 @@ class Page {
 
     for (const clickable of this.clickables) {
       if (clickable.contains?.(mouseX, mouseY)) hovering = true;
+
       if (
         clickable.handleClick &&
         clickable.contains?.(mouseX, mouseY) &&
-        mouseIsPressed
+        mouseJustPressed
       ) {
-        if (pageClickedWithin(300)) return;
-
-        pageLastClicked = Date.now();
-        clickable.handleClick();
+        if (!pageClickedWithin(300)) {
+          clickable.handleClick();
+          pageLastClicked = Date.now();
+          break;
+        }
       }
     }
+
+    this._prevMousePressed = nowPressed;
 
     cursor(hovering ? HAND : ARROW);
     this.show();
   }
 
-  /**
-   * (OVERRIDE) Ran on each draw program call.
-   */
   show() {}
-
-  /**
-   * (OVERRIDE) Ran when the page is loaded for the first time.
-   */
-  enter() {
-    this.active = true;
-  }
-
-  /**
-   * (OVERRIDE) Ran when the page is unloaded.
-   */
-  exit() {
-    this.active = false;
-  }
+  enter() { this.active = true; }
+  exit() { this.active = false; }
 }
