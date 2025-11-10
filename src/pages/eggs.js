@@ -24,20 +24,20 @@ class EggsPage extends Page {
         console.log(difficulty);
         this.scoreInc = 100;
       this.createEgg(
-      Math.floor(random(canvas.x)),
-      Math.floor(random(canvas.y)),
+      Math.floor(random(50, canvas.x - 50)),
+      Math.floor(random(75, canvas.y - 50)),
       50,
       55
     );
     this.createEgg(
-      Math.floor(random(canvas.x)),
-      Math.floor(random(canvas.y)),
+      Math.floor(random(50, canvas.x - 50)),
+      Math.floor(random(75, canvas.y - 50)),
       50,
       55
     );
     this.createEgg(
-      Math.floor(random(canvas.x)),
-      Math.floor(random(canvas.y)),
+      Math.floor(random(50, canvas.x - 50)),
+      Math.floor(random(75, canvas.y - 50)),
       50,
       55
     );
@@ -50,26 +50,26 @@ class EggsPage extends Page {
         console.log(difficulty);
         this.scoreInc = 50;
         this.createEgg(
-      Math.floor(random(canvas.x)),
-      Math.floor(random(canvas.y)),
+      Math.floor(random(50, canvas.x - 50)),
+      Math.floor(random(75, canvas.y - 50)),
       50,
       55
     );
         this.createEgg(
-      Math.floor(random(canvas.x)),
-      Math.floor(random(canvas.y)),
+      Math.floor(random(50, canvas.x - 50)),
+      Math.floor(random(75, canvas.y - 50)),
       50,
       55
     );
     this.createEgg(
-      Math.floor(random(canvas.x)),
-      Math.floor(random(canvas.y)),
+      Math.floor(random(50, canvas.x - 50)),
+      Math.floor(random(75, canvas.y - 50)),
       50,
       55
     );
     this.createEgg(
-      Math.floor(random(canvas.x)),
-      Math.floor(random(canvas.y)),
+      Math.floor(random(50, canvas.x - 50)),
+      Math.floor(random(75, canvas.y - 50)),
       50,
       55
     );
@@ -82,32 +82,32 @@ class EggsPage extends Page {
         console.log(difficulty);
         this.scoreInc = 25;
         this.createEgg(
-      Math.floor(random(canvas.x)),
-      Math.floor(random(canvas.y)),
+      Math.floor(random(50, canvas.x - 50)),
+      Math.floor(random(75, canvas.y - 50)),
       50,
       55
     );
         this.createEgg(
-      Math.floor(random(canvas.x)),
-      Math.floor(random(canvas.y)),
+      Math.floor(random(50, canvas.x - 50)),
+      Math.floor(random(75, canvas.y - 50)),
       50,
       55
     );
     this.createEgg(
-      Math.floor(random(canvas.x)),
-      Math.floor(random(canvas.y)),
+      Math.floor(random(50, canvas.x - 50)),
+      Math.floor(random(75, canvas.y - 50)),
       50,
       55
     );
         this.createEgg(
-      Math.floor(random(canvas.x)),
-      Math.floor(random(canvas.y)),
+      Math.floor(random(50, canvas.x - 50)),
+      Math.floor(random(75, canvas.y - 50)),
       50,
       55
     );
     this.createEgg(
-      Math.floor(random(canvas.x)),
-      Math.floor(random(canvas.y)),
+      Math.floor(random(50, canvas.x - 50)),
+      Math.floor(random(75, canvas.y - 50)),
       50,
       55
     );
