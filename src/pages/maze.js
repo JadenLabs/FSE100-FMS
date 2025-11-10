@@ -21,6 +21,12 @@ class MazePage extends Page {
     this.hearts = this.maxHearts;
     this.canLoseHeart = true;
     this.resetting = false;
+
+
+
+
+    this.flashTimer = 0;  
+    this.shakeTimer = 0;
   }
 
   enter() {
@@ -33,6 +39,20 @@ class MazePage extends Page {
   
   image(backgroundImg, 0, 0, canvas.x, canvas.y);
   image(mazebg, 0, 0, canvas.x, canvas.y);
+
+    let shakeX = 0;
+  let shakeY = 0;
+
+  if (this.shakeTimer > 0) {
+    shakeX = random(-2, 2);
+    shakeY = random(-2, 2);
+    this.shakeTimer--;
+  }
+
+  push();
+  translate(shakeX, shakeY);
+
+
 
   
   push();
@@ -51,17 +71,19 @@ class MazePage extends Page {
   const isWall = red(c) < 50 && green(c) < 50 && blue(c) < 50;
 
   
- if (isWall && mouseIsPressed && this.canLoseHeart && this.hearts > 0) {
-      this.hearts -= 1;
-      this.canLoseHeart = false;
-      this.trailLayer.clear();
+if (isWall && mouseIsPressed && this.canLoseHeart && this.hearts > 0) {
+  this.hearts -= 1;
+  this.canLoseHeart = false;
+  this.trailLayer.clear();
 
-      
-      setTimeout(() => {
-        this.canLoseHeart = true;
-      }, 1000);
-    }
+  
+  this.flashTimer = 15;  
+  this.shakeTimer = 15;
 
+  setTimeout(() => {
+    this.canLoseHeart = true;
+  }, 1000);
+}
   
   if (mouseIsPressed && this.hearts > 0) {
       this.trailLayer.noStroke();
@@ -77,6 +99,17 @@ image(this.trailLayer, 0, 0);
     drawGameTitle({ title: "Maze", widthOffset: 90, yOffset: -20 });
     this.backButton.show();
      this.displayHearts();
+
+
+  if (this.flashTimer > 0) {
+  push();
+  noStroke();
+  fill(255, 0, 0, map(this.flashTimer, 0, 15, 0, 180)); 
+  rect(250 ,250, 1000, 1000);
+  pop();
+
+  this.flashTimer--;
+}
   }
 
     displayHearts() {
