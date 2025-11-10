@@ -52,7 +52,8 @@ class MazePage extends Page {
   push();
   translate(shakeX, shakeY);
 
-
+fill(255, 255, 255, 250);
+rect(610, 110, 150, 40);
 
   
   push();
