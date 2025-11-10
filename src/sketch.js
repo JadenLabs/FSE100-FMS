@@ -49,8 +49,7 @@ function setup() {
     difficulty: DifficultyPage,
     asteroid: AsteroidPage,
   };
-  // changePage("main");
-  changePage("asteroid");
+  changePage("main");
 
   const cnv = createCanvas(canvas.x, canvas.y);
   cnv.parent("game");
