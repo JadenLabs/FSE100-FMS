@@ -157,6 +157,10 @@ class EggsPage extends Page {
         this.eggClicked = true;
         break;
       }
+else {
+        this.score = this.score - 100;
+        break;
+      }
     }
 
     for (const egg of this.eggs) {
