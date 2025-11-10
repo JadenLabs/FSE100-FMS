@@ -36,6 +36,7 @@ function preload() {
   asteroid = loadImage("assets/asteroid.png");
   stars = loadImage("assets/stars.png");
   heart = loadImage("assets/heart.webp");
+  asteroidbg = loadImage("assets/asteroidBackground.png");
 }
 
 
@@ -48,7 +49,8 @@ function setup() {
     difficulty: DifficultyPage,
     asteroid: AsteroidPage,
   };
-  changePage("main");
+  // changePage("main");
+  changePage("asteroid");
 
   const cnv = createCanvas(canvas.x, canvas.y);
   cnv.parent("game");

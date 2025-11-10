@@ -98,33 +98,7 @@ image(this.trailLayer, 0, 0);
 
     drawGameTitle({ title: "Maze", widthOffset: 90, yOffset: -20 });
     this.backButton.show();
-     this.displayHearts();
-
-
-  if (this.flashTimer > 0) {
-  push();
-  noStroke();
-  fill(255, 0, 0, map(this.flashTimer, 0, 15, 0, 180)); 
-  rect(250 ,250, 1000, 1000);
-  pop();
-
-  this.flashTimer--;
-}
+    displayHearts({total: this.maxHearts, remaining: this.hearts});
   }
-
-    displayHearts() {
-    const heartSize = 40;
-    for (let i = 0; i < this.maxHearts; i++) {
-      const x = 540 + i * (heartSize + 10);
-      const y = 90;
-      if (i < this.hearts) {
-        image(heart, x, y, heartSize, heartSize); 
-      } else {
-        tint(255, 100); 
-        image(heart, x, y, heartSize, heartSize);
-        noTint();
-      }
-    }
-  }
-
 }
+
