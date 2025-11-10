@@ -10,6 +10,7 @@ class AsteroidPage extends Page {
     this.player = new Player(canvas.m.x, canvas.q[2].y, 40, 45);
 
     this.lives = 3; // change based on difficulty
+    this.maxLives = 3;
 
     this.drawables.push(this.backButton);
     this.clickables.push(this.backButton, this.player);
@@ -32,6 +33,8 @@ class AsteroidPage extends Page {
       asteroid.update();
       if (checkCollion(asteroid, this.player)) this.handleCollision(asteroid);
     }
+
+    displayHearts({ total: this.maxLives, remaining: this.lives, base_x: canvas.q[1].x, base_y: 20 });
   }
 
   handleCollision(asteroid) {
@@ -45,6 +48,7 @@ class AsteroidPage extends Page {
     // Get egg
     // Break egg
     // Remove life
+    this.lives--;
     // If no lives left, end game
   }
 }
@@ -136,7 +140,7 @@ function checkCollion(asteroid, player) {
   // line(ax, ay, px, py);
 
   if (colliding) {
-    console.log("COLLISION");
+    // console.log("COLLISION");
     return true;
   }
 
