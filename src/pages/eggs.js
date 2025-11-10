@@ -12,35 +12,46 @@ class EggsPage extends Page {
       },
     });
 
+
+    this.MissClickButton = new MissClickButton({
+      x: 100,
+      y: 150,
+      w: 1250,
+      h: 450,
+      onClick: () => { this.score = this.score - 100; }
+    });
+
     this.drawables.push(this.backButton);
     this.clickables.push(this.backButton);
+
+    this.drawables.push(this.MissClickButton);
 
     this.score = 0;
     this.eggs = [];
     this.scoreInc;
-    switch(difficulty){
+    switch (difficulty) {
 
       case "easy":
         console.log(difficulty);
         this.scoreInc = 100;
-      this.createEgg(
-      Math.floor(random(50, canvas.x - 50)),
-      Math.floor(random(75, canvas.y - 50)),
-      50,
-      55
-    );
-    this.createEgg(
-      Math.floor(random(50, canvas.x - 50)),
-      Math.floor(random(75, canvas.y - 50)),
-      50,
-      55
-    );
-    this.createEgg(
-      Math.floor(random(50, canvas.x - 50)),
-      Math.floor(random(75, canvas.y - 50)),
-      50,
-      55
-    );
+        this.createEgg(
+          Math.floor(random(50, canvas.x - 50)),
+          Math.floor(random(75, canvas.y - 50)),
+          50,
+          55
+        );
+        this.createEgg(
+          Math.floor(random(50, canvas.x - 50)),
+          Math.floor(random(75, canvas.y - 50)),
+          50,
+          55
+        );
+        this.createEgg(
+          Math.floor(random(50, canvas.x - 50)),
+          Math.floor(random(75, canvas.y - 50)),
+          50,
+          55
+        );
         break;
 
 
@@ -50,29 +61,29 @@ class EggsPage extends Page {
         console.log(difficulty);
         this.scoreInc = 50;
         this.createEgg(
-      Math.floor(random(50, canvas.x - 50)),
-      Math.floor(random(75, canvas.y - 50)),
-      50,
-      55
-    );
+          Math.floor(random(50, canvas.x - 50)),
+          Math.floor(random(75, canvas.y - 50)),
+          50,
+          55
+        );
         this.createEgg(
-      Math.floor(random(50, canvas.x - 50)),
-      Math.floor(random(75, canvas.y - 50)),
-      50,
-      55
-    );
-    this.createEgg(
-      Math.floor(random(50, canvas.x - 50)),
-      Math.floor(random(75, canvas.y - 50)),
-      50,
-      55
-    );
-    this.createEgg(
-      Math.floor(random(50, canvas.x - 50)),
-      Math.floor(random(75, canvas.y - 50)),
-      50,
-      55
-    );
+          Math.floor(random(50, canvas.x - 50)),
+          Math.floor(random(75, canvas.y - 50)),
+          50,
+          55
+        );
+        this.createEgg(
+          Math.floor(random(50, canvas.x - 50)),
+          Math.floor(random(75, canvas.y - 50)),
+          50,
+          55
+        );
+        this.createEgg(
+          Math.floor(random(50, canvas.x - 50)),
+          Math.floor(random(75, canvas.y - 50)),
+          50,
+          55
+        );
         break;
 
 
@@ -82,37 +93,39 @@ class EggsPage extends Page {
         console.log(difficulty);
         this.scoreInc = 25;
         this.createEgg(
-      Math.floor(random(50, canvas.x - 50)),
-      Math.floor(random(75, canvas.y - 50)),
-      50,
-      55
-    );
+          Math.floor(random(50, canvas.x - 50)),
+          Math.floor(random(75, canvas.y - 50)),
+          50,
+          55
+        );
         this.createEgg(
-      Math.floor(random(50, canvas.x - 50)),
-      Math.floor(random(75, canvas.y - 50)),
-      50,
-      55
-    );
-    this.createEgg(
-      Math.floor(random(50, canvas.x - 50)),
-      Math.floor(random(75, canvas.y - 50)),
-      50,
-      55
-    );
+          Math.floor(random(50, canvas.x - 50)),
+          Math.floor(random(75, canvas.y - 50)),
+          50,
+          55
+        );
         this.createEgg(
-      Math.floor(random(50, canvas.x - 50)),
-      Math.floor(random(75, canvas.y - 50)),
-      50,
-      55
-    );
-    this.createEgg(
-      Math.floor(random(50, canvas.x - 50)),
-      Math.floor(random(75, canvas.y - 50)),
-      50,
-      55
-    );
+          Math.floor(random(50, canvas.x - 50)),
+          Math.floor(random(75, canvas.y - 50)),
+          50,
+          55
+        );
+        this.createEgg(
+          Math.floor(random(50, canvas.x - 50)),
+          Math.floor(random(75, canvas.y - 50)),
+          50,
+          55
+        );
+        this.createEgg(
+          Math.floor(random(50, canvas.x - 50)),
+          Math.floor(random(75, canvas.y - 50)),
+          50,
+          55
+        );
         break;
     }
+
+    this.clickables.push(this.MissClickButton);
 
   }
 
@@ -125,16 +138,16 @@ class EggsPage extends Page {
   }
 
   onEggClicked(egg) {
-    
-    if(egg.visible){
+
+    if (egg.visible) {
       this.score += this.scoreInc;
       this.delayEgg(egg, random(500, 3000));
     }
-    else{
-      this.score+=0;
+    else {
+      this.score += 0;
     }
     egg.visible = false;
-    
+
   }
 
   delayEgg(egg, time) {
@@ -147,18 +160,10 @@ class EggsPage extends Page {
 
 
   show() {
+    this.MissClickButton.show();
     image(backgroundImg, 0, 0, canvas.x, canvas.y);
     drawGameTitle({ title: "Eggs", widthOffset: 90, yOffset: -20 });
     this.backButton.show();
-
-    this.eggClicked = false;
-    for (let egg of this.eggs) {
-      if (egg.contains(mouseX, mouseY)) {
-        this.eggClicked = true;
-        break;
-      }
-    }
-
     for (const egg of this.eggs) {
       egg.show();
     }
@@ -166,7 +171,6 @@ class EggsPage extends Page {
   }
 
 }
-
 class EggButton extends Button {
   constructor({ x, y, w, h, parent }) {
     super({ x, y, w, h, onClick: () => { parent.onEggClicked(this); } });
@@ -180,10 +184,24 @@ class EggButton extends Button {
   }
 
   show() {
-    if (!this.visible){
-      image(stars, this.x - (this.w/2)-10, this.y - (this.h/2), this.w+30, this.h+30);
-       return; // don't draw if hidden
+    if (!this.visible) {
+      image(stars, this.x - (this.w / 2) - 10, this.y - (this.h / 2), this.w + 30, this.h + 30);
+      return; // don't draw if hidden
     }
     image(eggImg, this.x - this.w / 2, this.y - this.h / 2, this.w, this.h);
+  }
+}
+class MissClickButton extends Button {
+  constructor({ x, y, w, h, onClick }) {
+    super({ x, y, w, h, onClick });
+
+    this.x = x;
+    this.y = y;
+    this.w = w;
+    this.h = h;
+  }
+
+  show() {
+    rect(this.x, this.y, this.w, this.h);
   }
 }
