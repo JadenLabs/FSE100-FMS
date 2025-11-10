@@ -150,6 +150,15 @@ class EggsPage extends Page {
     image(backgroundImg, 0, 0, canvas.x, canvas.y);
     drawGameTitle({ title: "Eggs", widthOffset: 90, yOffset: -20 });
     this.backButton.show();
+
+    this.eggClicked = false;
+    for (let egg of this.eggs) {
+      if (egg.contains(mouseX, mouseY)) {
+        this.eggClicked = true;
+        break;
+      }
+    }
+
     for (const egg of this.eggs) {
       egg.show();
     }
