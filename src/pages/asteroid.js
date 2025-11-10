@@ -5,17 +5,14 @@ class AsteroidPage extends Page {
 
     this.asteroid_radius = 23;
     this.asteroids = [];
-    this.asteroids.push(
-      new Asteroid(),
-      new Asteroid(),
-    );
+    this.asteroids.push(new Asteroid(), new Asteroid());
 
     this.player = new Player(canvas.m.x, canvas.q[2].y, 40, 45);
 
     this.lives = 3; // change based on difficulty
 
     this.drawables.push(this.backButton);
-    this.clickables.push(this.backButton);
+    this.clickables.push(this.backButton, this.player);
   }
 
   enter() {
@@ -64,7 +61,7 @@ class Asteroid {
     this.y = -this.radius * 2;
     this.velocity = {
       x: random([-2, 2]),
-      y: random(2, 4),
+      y: random(1, 3),
     };
   }
 
@@ -85,13 +82,20 @@ class Asteroid {
   }
 }
 
-class Player {
+class Player extends Button {
   constructor(x, y, w, h) {
+    super({ x, y, w, h });
     Object.assign(this, { x, y, w, h });
   }
 
   update() {
+    super.update();
     this.draw();
+
+    if (this.contains(mouseX, mouseY) && mouseIsPressed) {
+      this.x = mouseX;
+      this.y = mouseY;
+    }
   }
 
   draw() {
