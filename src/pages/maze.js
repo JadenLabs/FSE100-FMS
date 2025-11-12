@@ -40,7 +40,7 @@ class MazePage extends Page {
   image(backgroundImg, 0, 0, canvas.x, canvas.y);
   image(mazebg, 0, 0, canvas.x, canvas.y);
 
-    let shakeX = 0;
+  let shakeX = 0;
   let shakeY = 0;
 
   if (this.shakeTimer > 0) {

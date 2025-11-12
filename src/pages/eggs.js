@@ -18,7 +18,10 @@ class EggsPage extends Page {
       y: 150,
       w: 1250,
       h: 450,
-      onClick: () => { this.score = this.score - 100; }
+      onClick: () => { if(this.score > 0){
+        this.missClick();
+        this.score = this.score - 100;
+      } }
     });
 
     this.drawables.push(this.backButton);
@@ -136,6 +139,10 @@ class EggsPage extends Page {
     this.clickables.push(egg);
 
   }
+  missClick() {
+  this.MissClickButton.damage = 80;
+  setTimeout(() => this.MissClickButton.damage = 0, 400);
+}
 
   onEggClicked(egg) {
 
@@ -160,8 +167,8 @@ class EggsPage extends Page {
 
 
   show() {
-    this.MissClickButton.show();
     image(backgroundImg, 0, 0, canvas.x, canvas.y);
+    this.MissClickButton.show();
     drawGameTitle({ title: "Eggs", widthOffset: 90, yOffset: -20 });
     this.backButton.show();
     for (const egg of this.eggs) {
@@ -199,9 +206,11 @@ class MissClickButton extends Button {
     this.y = y;
     this.w = w;
     this.h = h;
+    this.damage = 0;
   }
 
   show() {
+    fill(250,0,0,this.damage);
     rect(this.x, this.y, this.w, this.h);
   }
 }
