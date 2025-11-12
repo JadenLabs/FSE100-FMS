@@ -26,12 +26,16 @@ class EggsPage extends Page {
 
     this.drawables.push(this.backButton);
     this.clickables.push(this.backButton);
-
     this.drawables.push(this.MissClickButton);
 
     this.score = 0;
     this.eggs = [];
     this.scoreInc;
+    this.timerValue = 120; // seconds
+    this.timerActive = true;
+    this.timerElapsed = 0; // milliseconds
+
+
     switch (difficulty) {
 
       case "easy":
@@ -157,6 +161,23 @@ class EggsPage extends Page {
 
   }
 
+  updateTimer() {
+    if (!this.timerActive) return;
+
+    this.timerElapsed += deltaTime; // add frame time
+
+    if (this.timerElapsed >= 1000) { // 1 second passed
+      this.timerValue--;
+      this.timerElapsed = 0;
+    }
+
+    if (this.timerValue <= 0) {
+      this.timerValue = 0;
+      this.timerActive = false;
+      console.log("Timer ended!");
+    }
+  }
+
   delayEgg(egg, time) {
     setTimeout(() => {
       egg.visible = true;
@@ -174,7 +195,10 @@ class EggsPage extends Page {
     for (const egg of this.eggs) {
       egg.show();
     }
+    this.updateTimer();
     text("Score: " + this.score, canvas.x - 145, canvas.y - 315);
+    textSize(25);
+    text("Time left: "+ this.timerValue, canvas.x - 570, canvas.y - 320);
   }
 
 }
