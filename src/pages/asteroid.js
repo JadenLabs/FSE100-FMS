@@ -11,6 +11,7 @@ class AsteroidPage extends Page {
 
     this.lives = 3; // change based on difficulty
     this.maxLives = 3;
+    this.score = 0;
 
     this.drawables.push(this.backButton);
     this.clickables.push(this.backButton, this.player);
@@ -40,6 +41,7 @@ class AsteroidPage extends Page {
       base_x: canvas.q[1].x,
       base_y: 20,
     });
+    displayScore({ score: this.score });
   }
 
   handleCollision(asteroid) {
