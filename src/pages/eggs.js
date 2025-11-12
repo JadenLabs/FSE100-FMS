@@ -133,7 +133,6 @@ class EggsPage extends Page {
     }
 
     this.clickables.push(this.MissClickButton);
-
   }
 
   createEgg(x, y, w, h) {
@@ -210,16 +209,53 @@ class EggButton extends Button {
     this.y = y;
     this.w = w;
     this.h = h;
+
+    // Movement stuff
+    this.theta = random(0, TWO_PI);
+    this.speed = 0;
+    this.dtheta = 0.0;
+
+    switch (difficulty) {
+      case "easy":
+        this.speed = 0;
+        this.dtheta = 0;
+        break;
+      case "medium":
+        this.speed = random(0.7, 1.2);
+        this.dtheta = random(-0.02, 0.02);
+        break;
+      case "hard":
+        this.speed = random(2, 3);
+        this.dtheta = random(-0.03, 0.03);
+        break;
+    }
+
     this.parent = parent;
     this.visible = true;
   }
 
   show() {
+    this.shake()
+
     if (!this.visible) {
       image(stars, this.x - (this.w / 2) - 10, this.y - (this.h / 2), this.w + 30, this.h + 30);
       return; // don't draw if hidden
     }
     image(eggImg, this.x - this.w / 2, this.y - this.h / 2, this.w, this.h);
+  }
+
+  shake() {
+    if (this.x < 50) this.x = 50;
+    if (this.x > canvas.x - 50) this.x = canvas.x - 50;
+    if (this.y < 75) this.y = 75;
+    if (this.y > canvas.y - 50) this.y = canvas.y - 50;
+
+    this.theta += this.dtheta;
+    let dx = this.speed * cos(this.theta);
+    let dy = this.speed * sin(this.theta);
+
+    this.x += dx;
+    this.y += dy;
   }
 }
 class MissClickButton extends Button {
