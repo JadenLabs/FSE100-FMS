@@ -34,16 +34,19 @@ class AsteroidPage extends Page {
       if (checkCollion(asteroid, this.player)) this.handleCollision(asteroid);
     }
 
-    displayHearts({ total: this.maxLives, remaining: this.lives, base_x: canvas.q[1].x, base_y: 20 });
+    displayHearts({
+      total: this.maxLives,
+      remaining: this.lives,
+      base_x: canvas.q[1].x,
+      base_y: 20,
+    });
   }
 
   handleCollision(asteroid) {
     // Make the asteroid explode - needs animation
     // Create broken asteroid object
     // Reset asteroid positions
-    for (let a of this.asteroids) {
-      a.resetPosition();
-    }
+    asteroid.resetPosition();
 
     // Get egg
     // Break egg
@@ -90,15 +93,30 @@ class Player extends Button {
   constructor(x, y, w, h) {
     super({ x, y, w, h });
     Object.assign(this, { x, y, w, h });
+    this.isDragging = false;
   }
 
   update() {
     super.update();
     this.draw();
 
-    if (this.contains(mouseX, mouseY) && mouseIsPressed) {
-      this.x = mouseX;
-      this.y = mouseY;
+    if (mouseIsPressed && this.isHovered) {
+      this.isDragging = true;
+    }
+
+    if (this.isDragging && !mouseIsPressed) {
+      this.isDragging = false;
+    }
+
+    if (this.isDragging) {
+      if (mouseX < 0) this.x = 0;
+      else if (mouseX > canvas.x) this.x = canvas.x;
+      if (mouseY < 0) this.y = 0;
+      else if (mouseY > canvas.y) this.y = canvas.y;
+      else {
+        this.x = mouseX;
+        this.y = mouseY;
+      }
     }
   }
 
