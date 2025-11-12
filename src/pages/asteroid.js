@@ -149,11 +149,11 @@ function checkCollion(asteroid, player) {
 
   col = colliding ? "red" : "green";
 
-  fill(col);
-  stroke(col);
-  circle(x, y, 5);
-  circle(ax, ay, 3);
-  circle(px, py, 3);
+  // fill(col);
+  // stroke(col);
+  // circle(x, y, 5);
+  // circle(ax, ay, 3);
+  // circle(px, py, 3);
   // line(ax, ay, x, y);
   // line(ax, ay, px, py);
 
