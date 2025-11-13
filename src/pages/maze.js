@@ -23,7 +23,8 @@ class MazePage extends Page {
     this.resetting = false;
     this.flashTimer = 0;
     this.shakeTimer = 0;
-    
+    this.level = 1; 
+    this.totalLevels = 3;
     
   }
 
@@ -35,12 +36,13 @@ class MazePage extends Page {
 
   show() {
 
+//image
     image(backgroundImg, 0, 0, canvas.x, canvas.y);
     image(mazebg, 0, 0, canvas.x, canvas.y);
 
     let shakeX = 0;
     let shakeY = 0;
-
+//shake effect
     if (this.shakeTimer > 0) {
       shakeX = random(-2, 2);
       shakeY = random(-2, 2);
@@ -56,9 +58,41 @@ class MazePage extends Page {
 
     push();
     imageMode(CENTER);
-    const mazeWidth = canvas.x * 0.4;
-    const mazeHeight = canvas.y * 0.55;
-    image(maze1, canvas.x / 2, canvas.y / 2, mazeWidth, mazeHeight);
+    imageMode(CENTER);
+
+    
+
+    //maze size
+const mazeWidth = canvas.x * 0.4;
+const mazeHeight = canvas.y * 0.55;
+
+let currentMaze;
+let goal;
+
+// switch difficulty
+switch (difficulty) {
+  case 'easy':
+    currentMaze = maze2;
+      goal = { x: 495, y: 110 };
+    
+    break;
+  case 'medium':
+    currentMaze = maze1;
+      goal = { x: 425, y: 100 };
+ 
+    break;
+  case 'hard':
+    currentMaze = maze3;
+      goal = { x: 800, y: 450 };
+   
+    break;
+  default:
+    currentMaze = maze2;
+      goal = { x: 200, y: 100 };
+    break;
+}
+
+image(currentMaze, canvas.x / 2, canvas.y / 2, mazeWidth, mazeHeight);
     pop();
 
 
@@ -92,7 +126,14 @@ class MazePage extends Page {
 
     image(this.trailLayer, 0, 0);
 
+fill(0, 255, 0, 180);
+noStroke();
+circle(goal.x, goal.y, 40);
 
+let d = dist(mx, my, goal.x, goal.y);
+if (d < 25 && mouseIsPressed && this.hearts > 0) {
+  this.levelComplete(goal);
+}
 
 
     drawGameTitle({ title: "Maze", widthOffset: 90, yOffset: -20 });
@@ -110,6 +151,7 @@ class MazePage extends Page {
       this.flashTimer--;
     }
   }
+  
 
   displayHearts() {
     const heartSize = 40;
@@ -127,3 +169,4 @@ class MazePage extends Page {
   }
 
 }
+
