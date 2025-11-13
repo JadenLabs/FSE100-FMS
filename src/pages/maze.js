@@ -43,7 +43,7 @@ class MazePage extends Page {
     let shakeX = 0;
     let shakeY = 0;
 //shake effect
-  let shakeY = 0;
+
 
     if (this.shakeTimer > 0) {
       shakeX = random(-2, 2);
