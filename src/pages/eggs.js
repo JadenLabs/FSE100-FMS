@@ -18,17 +18,24 @@ class EggsPage extends Page {
       y: 150,
       w: 1250,
       h: 450,
-      onClick: () => { this.score = this.score - 100; }
+      onClick: () => { if(this.score > 0){
+        this.missClick();
+        this.score = this.score - 100;
+      } }
     });
 
     this.drawables.push(this.backButton);
     this.clickables.push(this.backButton);
-
     this.drawables.push(this.MissClickButton);
 
     this.score = 0;
     this.eggs = [];
     this.scoreInc;
+    this.timerValue = 120; // seconds
+    this.timerActive = true;
+    this.timerElapsed = 0; // milliseconds
+
+
     switch (difficulty) {
 
       case "easy":
@@ -126,7 +133,6 @@ class EggsPage extends Page {
     }
 
     this.clickables.push(this.MissClickButton);
-
   }
 
   createEgg(x, y, w, h) {
@@ -136,6 +142,10 @@ class EggsPage extends Page {
     this.clickables.push(egg);
 
   }
+  missClick() {
+  this.MissClickButton.damage = 80;
+  setTimeout(() => this.MissClickButton.damage = 0, 400);
+}
 
   onEggClicked(egg) {
 
@@ -150,6 +160,23 @@ class EggsPage extends Page {
 
   }
 
+  updateTimer() {
+    if (!this.timerActive) return;
+
+    this.timerElapsed += deltaTime; // add frame time
+
+    if (this.timerElapsed >= 1000) { // 1 second passed
+      this.timerValue--;
+      this.timerElapsed = 0;
+    }
+
+    if (this.timerValue <= 0) {
+      this.timerValue = 0;
+      this.timerActive = false;
+      console.log("Timer ended!");
+    }
+  }
+
   delayEgg(egg, time) {
     setTimeout(() => {
       egg.visible = true;
@@ -160,14 +187,17 @@ class EggsPage extends Page {
 
 
   show() {
-    this.MissClickButton.show();
     image(backgroundImg, 0, 0, canvas.x, canvas.y);
+    this.MissClickButton.show();
     drawGameTitle({ title: "Eggs", widthOffset: 90, yOffset: -20 });
     this.backButton.show();
     for (const egg of this.eggs) {
       egg.show();
     }
+    this.updateTimer();
     text("Score: " + this.score, canvas.x - 145, canvas.y - 315);
+    textSize(25);
+    text("Time left: "+ this.timerValue, canvas.x - 570, canvas.y - 320);
   }
 
 }
@@ -179,16 +209,53 @@ class EggButton extends Button {
     this.y = y;
     this.w = w;
     this.h = h;
+
+    // Movement stuff
+    this.theta = random(0, TWO_PI);
+    this.speed = 0;
+    this.dtheta = 0.0;
+
+    switch (difficulty) {
+      case "easy":
+        this.speed = 0;
+        this.dtheta = 0;
+        break;
+      case "medium":
+        this.speed = random(0.7, 1.2);
+        this.dtheta = random(-0.02, 0.02);
+        break;
+      case "hard":
+        this.speed = random(2, 3);
+        this.dtheta = random(-0.03, 0.03);
+        break;
+    }
+
     this.parent = parent;
     this.visible = true;
   }
 
   show() {
+    this.shake()
+
     if (!this.visible) {
       image(stars, this.x - (this.w / 2) - 10, this.y - (this.h / 2), this.w + 30, this.h + 30);
       return; // don't draw if hidden
     }
     image(eggImg, this.x - this.w / 2, this.y - this.h / 2, this.w, this.h);
+  }
+
+  shake() {
+    if (this.x < 50) this.x = 50;
+    if (this.x > canvas.x - 50) this.x = canvas.x - 50;
+    if (this.y < 75) this.y = 75;
+    if (this.y > canvas.y - 50) this.y = canvas.y - 50;
+
+    this.theta += this.dtheta;
+    let dx = this.speed * cos(this.theta);
+    let dy = this.speed * sin(this.theta);
+
+    this.x += dx;
+    this.y += dy;
   }
 }
 class MissClickButton extends Button {
@@ -199,9 +266,11 @@ class MissClickButton extends Button {
     this.y = y;
     this.w = w;
     this.h = h;
+    this.damage = 0;
   }
 
   show() {
+    fill(250,0,0,this.damage);
     rect(this.x, this.y, this.w, this.h);
   }
 }
