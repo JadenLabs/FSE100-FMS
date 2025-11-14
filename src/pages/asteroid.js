@@ -25,15 +25,23 @@ class AsteroidPage extends Page {
 
   show() {
     image(asteroidbg, 0, 0, canvas.x, canvas.y);
-    drawGameTitle({ title: "Asteroid", widthOffset: 90, yOffset: -20 });
-    this.backButton.show();
-
-    this.player.update();
 
     for (let asteroid of this.asteroids) {
       asteroid.update();
       if (checkCollion(asteroid, this.player)) this.handleCollision(asteroid);
+      else if (
+        asteroid.y > canvas.y ||
+        asteroid.x > canvas.x ||
+        asteroid.x < 0
+      ) {
+        this.score += 10;
+      }
     }
+
+    drawGameTitle({ title: "Asteroid", widthOffset: 90, yOffset: -20 });
+    this.backButton.show();
+
+    this.player.update();
 
     displayHearts({
       total: this.maxLives,
@@ -63,6 +71,7 @@ class Asteroid {
     // Offset x and y because image() draws using the top left corner
     this.radius = radius;
     this.resetPosition();
+    this.particles = [];
   }
 
   resetPosition() {
@@ -75,19 +84,69 @@ class Asteroid {
   }
 
   update() {
-    if (this.x > canvas.x || this.y > canvas.y) {
+    if (this.x > canvas.x || this.y > canvas.y || this.x < 0) {
       // Reset position to top
       this.resetPosition();
     }
 
     this.x += this.velocity.x;
     this.y += this.velocity.y;
+
+    this.spawnParticle();
+
+    this.particles = this.particles.filter((p) => {
+      p.update();
+      return p.radius > 0;
+    });
+    console.log(this.particles.length);
+
     this.draw();
-    // TODO draw a trail
+  }
+
+  spawnParticle() {
+    let m = {
+      x: this.x + this.radius,
+      y: this.y + this.radius,
+    };
+
+    let x = random(-this.radius / 2, this.radius / 2) + m.x;
+    let perpSlope = -this.velocity.x / this.velocity.y;
+    let y = perpSlope * (x - m.x) + m.y;
+
+    this.particles.push(
+      new Particle(
+        x,
+        y,
+        10,
+      )
+    );
   }
 
   draw() {
     image(asteroid, this.x, this.y, this.radius * 2, this.radius * 2);
+  }
+}
+
+class Particle {
+  // Mid x and mid y from asteroid
+  constructor(x, y, radius) {
+    this.x = x;
+    this.y = y;
+    this.radius = radius;
+    this.opacity = 0.67;
+  }
+
+  update() {
+    this.radius -= 0.2;
+    this.opacity -= 0.01;
+    this.draw();
+  }
+
+  draw() {
+    fill(`rgba(171, 60, 9, ${this.opacity})`);
+    noStroke();
+
+    circle(this.x, this.y, this.radius);
   }
 }
 
@@ -116,6 +175,8 @@ class Player extends Button {
       if (mouseY < 0) this.y = 0;
       else if (mouseY > canvas.y) this.y = canvas.y;
       else {
+        // Maybe move at a set speed towards the mouse
+        // That's a future-me problem
         this.x = mouseX;
         this.y = mouseY;
       }
