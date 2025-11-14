@@ -14,9 +14,7 @@ class MazePage extends Page {
 
     this.drawables.push(this.backButton);
     this.clickables.push(this.backButton);
-
     this.trailLayer = createGraphics(canvas.x, canvas.y);
-
     this.maxHearts = 3;
     this.hearts = this.maxHearts;
     this.canLoseHeart = true;
@@ -25,6 +23,12 @@ class MazePage extends Page {
     this.shakeTimer = 0;
     this.level = 1; 
     this.totalLevels = 3;
+    this.inputLocked = true;
+
+    this.showReward = false;
+this.rewardScale = 0; 
+this.confetti = [];
+
     
   }
 
@@ -32,17 +36,88 @@ class MazePage extends Page {
     super.enter();
     rectMode(CENTER);
     textAlign(CENTER, CENTER);
+     
+    this.inputLocked = true;
+
+  
   }
 
   show() {
 
-//image
+if (this.showReward) {
+
+  // Dim + blur background
+  push();
+  noStroke();
+  noFill();
+  rect(canvas.x/2, canvas.y/2, canvas.x, canvas.y);
+  pop();
+
+  // Animate scale-in
+  this.rewardScale = lerp(this.rewardScale, 1, 0.15);
+
+  push();
+  translate(canvas.x/2, canvas.y/2);
+  scale(this.rewardScale);
+
+  // Glass panel
+  push();
+  fill(255, 255, 255, 220);
+  stroke(255,255,255,150);
+  strokeWeight(3);
+  rect(0, 0, 380, 220, 25);
+
+  // Glass shine
+  noStroke();
+  fill(255,255,255,100);
+  rect(0, -40, 340, 15, 10);
+  pop();
+
+  // Title
+  fill(0);
+  textSize(30);
+  text("🎉 LEVEL COMPLETE!", 0, -10);
+
+  // Subtitle
+  textSize(18);
+  fill(50);
+  text("Great job, explorer!", 0, 30);
+
+  pop();
+
+  // Confetti animation
+  for (let c of this.confetti) {
+    fill(c.color);
+    noStroke();
+    circle(c.x, c.y, c.size);
+
+    c.y += c.speed;
+    if (c.y > canvas.y + 20) {
+      c.y = random(-100, -20);
+      c.x = random(canvas.x);
+    }
+  }
+
+  return; // stop maze drawing behind popup
+}
+
+
+// time out before game start
+if (this.inputLocked) {
+  if (!mouseIsPressed) {
+    this.inputLocked = false;
+  }
+  return;
+}
+
+//background
     image(backgroundImg, 0, 0, canvas.x, canvas.y);
     image(mazebg, 0, 0, canvas.x, canvas.y);
 
+//shake effect
     let shakeX = 0;
     let shakeY = 0;
-//shake effect
+
 
 
     if (this.shakeTimer > 0) {
@@ -53,10 +128,7 @@ class MazePage extends Page {
 
     push();
     translate(shakeX, shakeY);
-
-    fill(255, 255, 255, 250);
-    rect(610, 110, 150, 40);
-
+   
 
     push();
     imageMode(CENTER);
@@ -64,7 +136,7 @@ class MazePage extends Page {
 
     
 
-    //maze size
+ //maze size
 const mazeWidth = canvas.x * 0.4;
 const mazeHeight = canvas.y * 0.55;
 
@@ -127,8 +199,8 @@ image(currentMaze, canvas.x / 2, canvas.y / 2, mazeWidth, mazeHeight);
     }
 
     image(this.trailLayer, 0, 0);
-
-fill(0, 255, 0, 180);
+//goal
+noFill();
 noStroke();
 circle(goal.x, goal.y, 40);
 
@@ -155,20 +227,38 @@ if (d < 25 && mouseIsPressed && this.hearts > 0) {
   }
   
 
-  displayHearts() {
-    const heartSize = 40;
-    for (let i = 0; i < this.maxHearts; i++) {
-      const x = 540 + i * (heartSize + 10);
-      const y = 90;
-      if (i < this.hearts) {
-        image(heart, x, y, heartSize, heartSize);
-      } else {
-        tint(255, 100);
-        image(heart, x, y, heartSize, heartSize);
-        noTint();
-      }
+displayHearts() {
+  const eggWidth = 50;
+  const eggHeight = 60;
+
+  for (let i = 0; i < this.maxHearts; i++) {
+    const x = 275 + i * (eggWidth + 2);
+    const y = 295;
+
+    if (i < this.hearts) {
+      image(egg2, x, y, eggWidth, eggHeight);
+    } else {
+      image(eggCracked, x, y, eggWidth, eggHeight);
     }
   }
+}
+
+
+levelComplete() {
+  this.showReward = true;
+  this.rewardScale = 0;
+
+  this.confetti = [];
+  for (let i = 0; i < 40; i++) {
+    this.confetti.push({
+      x: random(canvas.x),
+      y: random(-200, 0),
+      size: random(5, 10),
+      speed: random(2, 4),
+      color: color(random(100,255), random(100,255), random(100,255))
+    });
+  }
+}
 
 }
 
