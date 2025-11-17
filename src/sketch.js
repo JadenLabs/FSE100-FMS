@@ -79,6 +79,7 @@ function preload() {
     maze2 = loadImage("assets/maze2.png");
     eggCracked = loadImage("assets/eggCracked.png");
     egg2 = loadImage("assets/egg2.png");
+    eggBG = loadImage("assets/eggGameBG.png");
 }
 
 // Drawings to only call once

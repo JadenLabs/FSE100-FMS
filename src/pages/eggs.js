@@ -31,7 +31,7 @@ class EggsPage extends Page {
     this.score = 0;
     this.eggs = [];
     this.scoreInc;
-    this.timerValue = 120; // seconds
+    this.timerValue = 60; // seconds
     this.timerActive = true;
     this.timerElapsed = 0; // milliseconds
 
@@ -187,7 +187,7 @@ class EggsPage extends Page {
 
 
   show() {
-    image(backgroundImg, 0, 0, canvas.x, canvas.y);
+    image(eggBG, 0, 0, canvas.x, canvas.y);
     this.MissClickButton.show();
     drawGameTitle({ title: "Eggs", widthOffset: 90, yOffset: -20 });
     this.backButton.show();
@@ -198,6 +198,10 @@ class EggsPage extends Page {
     text("Score: " + this.score, canvas.x - 145, canvas.y - 315);
     textSize(25);
     text("Time left: "+ this.timerValue, canvas.x - 570, canvas.y - 320);
+    if (this.timerValue <= 0) {
+            finalScore = this.score;
+            changePage("end");
+        }
   }
 
 }
