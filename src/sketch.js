@@ -15,6 +15,26 @@ let pageLastClicked = Date.now();
 
 let finalScore = 0; // Used later in the end page
 
+const starRatings = {
+    eggs: [
+        500,
+        1000,
+        1500,
+        2000,
+        2500,
+    ],
+    asteroid: [
+        200,
+        600,
+        1200,
+        2000,
+        3000,
+    ],
+    maze: [
+        // idk
+    ]
+}
+
 // // ! Remove later
 // difficulty = "easy";
 // nextPage = "asteroid";
