@@ -3,15 +3,18 @@ class AsteroidPage extends Page {
         super("asteroid");
         this.backButton = new BackButton();
 
+        this.player = new Player(canvas.m.x, canvas.q[2].y, 40, 45);
+
         this.asteroid_radius = 23;
         this.asteroids = [];
-        this.asteroids.push(new Asteroid(), new Asteroid());
-
-        this.player = new Player(canvas.m.x, canvas.q[2].y, 40, 45);
+        for (let i = 0; i < this.asteroidsOnScreen(0); i++) {
+            this.asteroids.push(new Asteroid({ player: this.player }));
+        }
 
         this.lives = 3; // change based on difficulty
         this.maxLives = 3;
         this.score = 0;
+        this.gameElapesedTimeMS = 0;
 
         this.drawables.push(this.backButton);
         this.clickables.push(this.backButton, this.player);
@@ -24,7 +27,15 @@ class AsteroidPage extends Page {
     }
 
     show() {
+        this.gameElapesedTimeMS += deltaTime;
         image(asteroidbg, 0, 0, canvas.x, canvas.y);
+
+        let nAsteroids = this.asteroidsOnScreen(
+            Math.floor(this.gameElapesedTimeMS / 1000)
+        );
+        while (this.asteroids.length < nAsteroids) {
+            this.asteroids.push(new Asteroid({ player: this.player }));
+        }
 
         for (let asteroid of this.asteroids) {
             asteroid.update();
@@ -67,14 +78,26 @@ class AsteroidPage extends Page {
             changePage("end");
         }
     }
+
+    asteroidsOnScreen(time) {
+        let exponent = time / 50;
+        let numerator = 25 * Math.exp(exponent);
+        let denominator = 6 + Math.exp(exponent);
+        let asteroids = Math.floor(numerator / denominator);
+        console.log(asteroids);
+
+        return asteroids;
+    }
 }
 
 class Asteroid {
-    constructor({ radius = 23 } = {}) {
+    constructor({ player, radius = 23 } = {}) {
         // Offset x and y because image() draws using the top left corner
         this.radius = radius;
         this.resetPosition();
         this.particles = [];
+        this.player = player;
+        this.turnSpeed = 0.001;
     }
 
     resetPosition() {
@@ -82,7 +105,7 @@ class Asteroid {
         this.y = -this.radius * 2;
         this.velocity = {
             x: random([-2, 2]),
-            y: random(1, 3),
+            y: this.randomVelocity(1, 3),
         };
     }
 
@@ -91,6 +114,11 @@ class Asteroid {
             // Reset position to top
             this.resetPosition();
         }
+
+        let driftStrength = 0.02;
+        let dir = Math.sign(this.player.x - this.x);
+        this.velocity.x += dir * driftStrength;
+        this.velocity.x = constrain(this.velocity.x, -4, 4);
 
         this.x += this.velocity.x;
         this.y += this.velocity.y;
@@ -101,7 +129,6 @@ class Asteroid {
             p.update();
             return p.radius > 0;
         });
-        console.log(this.particles.length);
 
         this.draw();
     }
@@ -121,6 +148,11 @@ class Asteroid {
 
     draw() {
         image(asteroid, this.x, this.y, this.radius * 2, this.radius * 2);
+    }
+
+    randomVelocity(min, max) {
+        let rand = random(-3, 3);
+        return Math.min(max, (max - min) * Math.exp(-rand * rand) + min);
     }
 }
 
