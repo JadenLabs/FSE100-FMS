@@ -37,6 +37,9 @@ function preload() {
   stars = loadImage("assets/stars.png");
   heart = loadImage("assets/heart.webp");
   asteroidbg = loadImage("assets/asteroidBackground.png");
+  maze2 = loadImage("assets/maze2.png");
+  eggCracked = loadImage("assets/eggCracked.png");
+  egg2= loadImage("assets/egg2.png");
 }
 
 
