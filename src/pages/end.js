@@ -40,6 +40,10 @@ class EndPage extends Page {
 
         this.drawables.push(...this.gameButtons);
         this.clickables.push(...this.gameButtons);
+
+        this.displayScore = 0;
+        this.displayTime = 2;
+        this.scorePerFrame = floor(finalScore / (this.displayTime * 60));
     }
 
     /**
@@ -72,7 +76,12 @@ class EndPage extends Page {
         fill(0);
         text(`Difficulty: ${difficulty.charAt(0).toUpperCase() + difficulty.slice(1)}`, canvas.m.x, canvas.m.y - 70);
         displayStars({  total: 5, remaining: Math.min(5, Math.floor(finalScore / 500)), base_x: canvas.m.x - 100, base_y: canvas.m.y - 67 + 44 }); // 67
-        text(`Score: ${finalScore}`, canvas.m.x, canvas.m.y + 25 );
+        text(`Score: ${this.displayScore}`, canvas.m.x, canvas.m.y + 25 );
+
+        if (this.displayScore < finalScore) {
+            this.displayScore += this.scorePerFrame;
+            if (this.displayScore > finalScore) this.displayScore = finalScore;
+        }
 
         for (const button of this.gameButtons) {
             button.show();
