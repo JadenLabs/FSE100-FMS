@@ -31,7 +31,7 @@ class EggsPage extends Page {
     this.score = 0;
     this.eggs = [];
     this.scoreInc;
-    this.timerValue = 15; // seconds
+    this.timerValue = 60; // seconds
     this.timerActive = true;
     this.timerElapsed = 0; // milliseconds
 
