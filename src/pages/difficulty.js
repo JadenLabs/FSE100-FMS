@@ -14,7 +14,6 @@ class DifficultyPage extends Page {
         onClick: () => {
           difficulty = "easy";
           changePage(nextPage);
-          nextPage = null;
         },
       }),
       new DifficultyButton({
@@ -26,7 +25,6 @@ class DifficultyPage extends Page {
         onClick: () => {
           difficulty = "medium";
           changePage(nextPage);
-          nextPage = null;
         },
       }),
       new DifficultyButton({
@@ -38,7 +36,6 @@ class DifficultyPage extends Page {
         onClick: () => {
           difficulty = "hard";
           changePage(nextPage);
-          nextPage = null;
         },
       }),
     ];

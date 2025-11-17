@@ -60,9 +60,11 @@ class AsteroidPage extends Page {
 
     // Get egg
     // Break egg
-    // Remove life
     this.lives--;
-    // If no lives left, end game
+    if (this.lives <= 0) {
+      finalScore = this.score;
+      changePage("end");
+    }
   }
 }
 
