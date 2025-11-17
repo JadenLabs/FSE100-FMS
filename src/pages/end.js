@@ -42,7 +42,7 @@ class EndPage extends Page {
         this.clickables.push(...this.gameButtons);
 
         this.displayScore = 0;
-        this.displayTime = 2;
+        this.displayTime = 1;
         this.scorePerFrame = floor(finalScore / (this.displayTime * 60));
     }
 

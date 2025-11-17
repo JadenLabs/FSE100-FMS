@@ -1,231 +1,218 @@
 class AsteroidPage extends Page {
-  constructor() {
-    super("asteroid");
-    this.backButton = new BackButton();
+    constructor() {
+        super("asteroid");
+        this.backButton = new BackButton();
 
-    this.asteroid_radius = 23;
-    this.asteroids = [];
-    this.asteroids.push(new Asteroid(), new Asteroid());
+        this.asteroid_radius = 23;
+        this.asteroids = [];
+        this.asteroids.push(new Asteroid(), new Asteroid());
 
-    this.player = new Player(canvas.m.x, canvas.q[2].y, 40, 45);
+        this.player = new Player(canvas.m.x, canvas.q[2].y, 40, 45);
 
-    this.lives = 3; // change based on difficulty
-    this.maxLives = 3;
-    this.score = 0;
+        this.lives = 3; // change based on difficulty
+        this.maxLives = 3;
+        this.score = 0;
 
-    this.drawables.push(this.backButton);
-    this.clickables.push(this.backButton, this.player);
-  }
-
-  enter() {
-    super.enter();
-    rectMode(CENTER);
-    textAlign(CENTER, CENTER);
-  }
-
-  show() {
-    image(asteroidbg, 0, 0, canvas.x, canvas.y);
-
-    for (let asteroid of this.asteroids) {
-      asteroid.update();
-      if (checkCollion(asteroid, this.player)) this.handleCollision(asteroid);
-      else if (
-        asteroid.y > canvas.y ||
-        asteroid.x > canvas.x ||
-        asteroid.x < 0
-      ) {
-        this.score += 10;
-      }
+        this.drawables.push(this.backButton);
+        this.clickables.push(this.backButton, this.player);
     }
 
-    drawGameTitle({ title: "Asteroid", widthOffset: 90, yOffset: -20 });
-    this.backButton.show();
-
-    this.player.update();
-
-    displayHearts({
-      total: this.maxLives,
-      remaining: this.lives,
-      base_x: canvas.q[1].x,
-      base_y: 20,
-    });
-    displayScore({ score: this.score });
-  }
-
-  handleCollision(asteroid) {
-    // Make the asteroid explode - needs animation
-    // Create broken asteroid object
-    // Reset asteroid positions
-    asteroid.resetPosition();
-
-    // Get egg
-    // Break egg
-    this.lives--;
-    if (this.lives <= 0) {
-      finalScore = this.score;
-      changePage("end");
+    enter() {
+        super.enter();
+        rectMode(CENTER);
+        textAlign(CENTER, CENTER);
     }
-  }
+
+    show() {
+        image(asteroidbg, 0, 0, canvas.x, canvas.y);
+
+        for (let asteroid of this.asteroids) {
+            asteroid.update();
+            if (checkCollion(asteroid, this.player))
+                this.handleCollision(asteroid);
+            else if (
+                asteroid.y > canvas.y ||
+                asteroid.x > canvas.x ||
+                asteroid.x < 0
+            ) {
+                this.score += 10;
+            }
+        }
+
+        drawGameTitle({ title: "Asteroid", widthOffset: 90, yOffset: -20 });
+        this.backButton.show();
+
+        this.player.update();
+
+        displayHearts({
+            total: this.maxLives,
+            remaining: this.lives,
+            base_x: canvas.q[1].x,
+            base_y: 20,
+        });
+        displayScore({ score: this.score });
+    }
+
+    handleCollision(asteroid) {
+        // Make the asteroid explode - needs animation
+        // Create broken asteroid object
+        // Reset asteroid positions
+        asteroid.resetPosition();
+
+        // Get egg
+        // Break egg
+        this.lives--;
+        if (this.lives <= 0) {
+            finalScore = this.score;
+            changePage("end");
+        }
+    }
 }
 
 class Asteroid {
-  constructor({ radius = 23 } = {}) {
-    // Offset x and y because image() draws using the top left corner
-    this.radius = radius;
-    this.resetPosition();
-    this.particles = [];
-  }
-
-  resetPosition() {
-    this.x = random(0, canvas.x - this.radius * 2);
-    this.y = -this.radius * 2;
-    this.velocity = {
-      x: random([-2, 2]),
-      y: random(1, 3),
-    };
-  }
-
-  update() {
-    if (this.x > canvas.x || this.y > canvas.y || this.x < 0) {
-      // Reset position to top
-      this.resetPosition();
+    constructor({ radius = 23 } = {}) {
+        // Offset x and y because image() draws using the top left corner
+        this.radius = radius;
+        this.resetPosition();
+        this.particles = [];
     }
 
-    this.x += this.velocity.x;
-    this.y += this.velocity.y;
+    resetPosition() {
+        this.x = random(0, canvas.x - this.radius * 2);
+        this.y = -this.radius * 2;
+        this.velocity = {
+            x: random([-2, 2]),
+            y: random(1, 3),
+        };
+    }
 
-    this.spawnParticle();
+    update() {
+        if (this.x > canvas.x || this.y > canvas.y || this.x < 0) {
+            // Reset position to top
+            this.resetPosition();
+        }
 
-    this.particles = this.particles.filter((p) => {
-      p.update();
-      return p.radius > 0;
-    });
-    console.log(this.particles.length);
+        this.x += this.velocity.x;
+        this.y += this.velocity.y;
 
-    this.draw();
-  }
+        this.spawnParticle();
 
-  spawnParticle() {
-    let m = {
-      x: this.x + this.radius,
-      y: this.y + this.radius,
-    };
+        this.particles = this.particles.filter((p) => {
+            p.update();
+            return p.radius > 0;
+        });
+        console.log(this.particles.length);
 
-    let x = random(-this.radius / 2, this.radius / 2) + m.x;
-    let perpSlope = -this.velocity.x / this.velocity.y;
-    let y = perpSlope * (x - m.x) + m.y;
+        this.draw();
+    }
 
-    this.particles.push(
-      new Particle(
-        x,
-        y,
-        10,
-      )
-    );
-  }
+    spawnParticle() {
+        let m = {
+            x: this.x + this.radius,
+            y: this.y + this.radius,
+        };
 
-  draw() {
-    image(asteroid, this.x, this.y, this.radius * 2, this.radius * 2);
-  }
+        let x = random(-this.radius / 2, this.radius / 2) + m.x;
+        let perpSlope = -this.velocity.x / this.velocity.y;
+        let y = perpSlope * (x - m.x) + m.y;
+
+        this.particles.push(new Particle(x, y, 10));
+    }
+
+    draw() {
+        image(asteroid, this.x, this.y, this.radius * 2, this.radius * 2);
+    }
 }
 
 class Particle {
-  // Mid x and mid y from asteroid
-  constructor(x, y, radius) {
-    this.x = x;
-    this.y = y;
-    this.radius = radius;
-    this.opacity = 0.67;
-  }
+    // Mid x and mid y from asteroid
+    constructor(x, y, radius) {
+        this.x = x;
+        this.y = y;
+        this.radius = radius;
+        this.opacity = 0.67;
+    }
 
-  update() {
-    this.radius -= 0.2;
-    this.opacity -= 0.01;
-    this.draw();
-  }
+    update() {
+        this.radius -= 0.2;
+        this.opacity -= 0.01;
+        this.draw();
+    }
 
-  draw() {
-    fill(`rgba(171, 60, 9, ${this.opacity})`);
-    noStroke();
+    draw() {
+        fill(`rgba(171, 60, 9, ${this.opacity})`);
+        noStroke();
 
-    circle(this.x, this.y, this.radius);
-  }
+        circle(this.x, this.y, this.radius);
+    }
 }
 
 class Player extends Button {
-  constructor(x, y, w, h) {
-    super({ x, y, w, h });
-    Object.assign(this, { x, y, w, h });
-    this.isDragging = false;
-  }
-
-  update() {
-    super.update();
-    this.draw();
-
-    if (mouseIsPressed && this.isHovered) {
-      this.isDragging = true;
+    constructor(x, y, w, h) {
+        super({ x, y, w, h });
+        Object.assign(this, { x, y, w, h });
+        this.isDragging = false;
+        this.speed = 5;
     }
 
-    if (this.isDragging && !mouseIsPressed) {
-      this.isDragging = false;
+    update() {
+        super.update();
+        this.draw();
+
+        if (mouseIsPressed) {
+            if (mouseX < 0) this.x = 0;
+            else if (mouseX > canvas.x) this.x = canvas.x;
+            if (mouseY < 0) this.y = 0;
+            else if (mouseY > canvas.y) this.y = canvas.y;
+            else {
+                let theta = Math.atan2(mouseY - this.y, mouseX - this.x);
+                this.x += this.speed * Math.cos(theta);
+                this.y += this.speed * Math.sin(theta);
+            }
+        }
     }
 
-    if (this.isDragging) {
-      if (mouseX < 0) this.x = 0;
-      else if (mouseX > canvas.x) this.x = canvas.x;
-      if (mouseY < 0) this.y = 0;
-      else if (mouseY > canvas.y) this.y = canvas.y;
-      else {
-        // Maybe move at a set speed towards the mouse
-        // That's a future-me problem
-        this.x = mouseX;
-        this.y = mouseY;
-      }
+    draw() {
+        fill(255);
+        image(eggImg, this.x - this.w / 2, this.y - this.h / 2, this.w, this.h);
     }
-  }
-
-  draw() {
-    fill(255);
-    image(eggImg, this.x - this.w / 2, this.y - this.h / 2, this.w, this.h);
-  }
 }
 
 function checkCollion(asteroid, player) {
-  const ax = asteroid.x + asteroid.radius;
-  const ay = asteroid.y + asteroid.radius;
+    const ax = asteroid.x + asteroid.radius;
+    const ay = asteroid.y + asteroid.radius;
 
-  const px = player.x;
-  const py = player.y;
+    const px = player.x;
+    const py = player.y;
 
-  const dx = ax - px;
-  const dy = ay - py;
+    const dx = ax - px;
+    const dy = ay - py;
 
-  let angle = Math.atan2(dx, dy);
+    let angle = Math.atan2(dx, dy);
 
-  x = ax - asteroid.radius * Math.sin(angle);
-  y = ay - asteroid.radius * Math.cos(angle);
+    x = ax - asteroid.radius * Math.sin(angle);
+    y = ay - asteroid.radius * Math.cos(angle);
 
-  colliding =
-    x > px - player.w / 2 &&
-    x < px + player.w / 2 &&
-    y > py - player.h / 2 &&
-    y < py + player.h / 2;
+    colliding =
+        x > px - player.w / 2 &&
+        x < px + player.w / 2 &&
+        y > py - player.h / 2 &&
+        y < py + player.h / 2;
 
-  col = colliding ? "red" : "green";
+    col = colliding ? "red" : "green";
 
-  // fill(col);
-  // stroke(col);
-  // circle(x, y, 5);
-  // circle(ax, ay, 3);
-  // circle(px, py, 3);
-  // line(ax, ay, x, y);
-  // line(ax, ay, px, py);
+    // fill(col);
+    // stroke(col);
+    // circle(x, y, 5);
+    // circle(ax, ay, 3);
+    // circle(px, py, 3);
+    // line(ax, ay, x, y);
+    // line(ax, ay, px, py);
 
-  if (colliding) {
-    // console.log("COLLISION");
-    return true;
-  }
+    if (colliding) {
+        // console.log("COLLISION");
+        return true;
+    }
 
-  return false;
+    return false;
 }
