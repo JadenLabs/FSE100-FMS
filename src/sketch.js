@@ -46,19 +46,21 @@ function changePage(id) {
 // Stuff done before calling setup
 // LOAD IMAGES HERE
 function preload() {
-    backgroundImg = loadImage("assets/background.jpg");
-    mazebg = loadImage("assets/mazebg.png");
-    maze1 = loadImage("assets/maze1.png");
-    eggImg = loadImage("assets/egg.png");
-    backButton = loadImage("assets/backbutton.png");
-    asteroid = loadImage("assets/asteroid.png");
-    star = loadImage("assets/star.png");
-    stars = loadImage("assets/stars.png");
-    heart = loadImage("assets/heart.webp");
-    asteroidbg = loadImage("assets/asteroidBackground.png");
-    maze2 = loadImage("assets/maze2.png");
-    eggCracked = loadImage("assets/eggCracked.png");
-    egg2 = loadImage("assets/egg2.png");
+  backgroundImg = loadImage("assets/background.jpg");
+  mazebg = loadImage("assets/mazebg.png");
+  maze1 = loadImage("assets/maze1.png");
+  eggImg = loadImage("assets/egg.png");
+  backButton = loadImage("assets/backbutton.png");
+  asteroid = loadImage("assets/asteroid.png");
+  stars = loadImage("assets/stars.png");
+  star = loadImage("assets/star.png");
+  heart = loadImage("assets/heart.webp");
+  asteroidbg = loadImage("assets/asteroidBackground.png");
+  maze2 = loadImage("assets/maze2.png");
+  eggCracked = loadImage("assets/eggCracked.png");
+  egg2= loadImage("assets/egg2.png");
+  dinoGif = loadImage("assets/dino.gif");
+  dinoGif2 = loadImage("assets/dino2.gif");
 }
 
 // Drawings to only call once

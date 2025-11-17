@@ -26,8 +26,10 @@ class MazePage extends Page {
     this.inputLocked = true;
 
     this.showReward = false;
-this.rewardScale = 0; 
-this.confetti = [];
+    this.rewardScale = 0; 
+    this.confetti = [];
+    this.showGameOver = false;
+    
 
     
   }
@@ -46,6 +48,10 @@ this.confetti = [];
 
 if (this.showReward) {
 
+   image(backgroundImg, 0, 0, canvas.x, canvas.y);
+  image(mazebg, 0, 0, canvas.x, canvas.y);
+
+  // ----------------------WIN POPUP--------------------------------------------
   // Dim + blur background
   push();
   noStroke();
@@ -65,7 +71,7 @@ if (this.showReward) {
   fill(255, 255, 255, 220);
   stroke(255,255,255,150);
   strokeWeight(3);
-  rect(0, 0, 380, 220, 25);
+  rect(0, 0, 450, 320, 25);
 
   // Glass shine
   noStroke();
@@ -73,19 +79,17 @@ if (this.showReward) {
   rect(0, -40, 340, 15, 10);
   pop();
 
-  // Title
-  fill(0);
-  textSize(30);
-  text("🎉 LEVEL COMPLETE!", 0, -10);
+  
+  
+  imageMode(CENTER);
+  image(dinoGif, 0, 0, 360, 210);
 
-  // Subtitle
-  textSize(18);
-  fill(50);
-  text("Great job, explorer!", 0, 30);
+  
 
   pop();
 
   // Confetti animation
+  
   for (let c of this.confetti) {
     fill(c.color);
     noStroke();
@@ -101,6 +105,41 @@ if (this.showReward) {
   return; // stop maze drawing behind popup
 }
 
+// ----------------------lose POPUP--------------------------------------------
+if (this.showGameOver) {
+
+  image(backgroundImg, 0, 0, canvas.x, canvas.y);
+  image(mazebg, 0, 0, canvas.x, canvas.y);
+
+  this.rewardScale = lerp(this.rewardScale, 1, 0.15);
+
+  push();
+  translate(canvas.x/2, canvas.y/2);
+  scale(this.rewardScale);
+
+  // Glass panel
+  push();
+  fill(255, 255, 255, 220);
+  stroke(255,255,255,150);
+  strokeWeight(3);
+  rect(0, 0, 450, 320, 25);
+
+  noStroke();
+  fill(255,255,255,100);
+  rect(0, -40, 340, 15, 10);
+  pop();
+
+  // GAME OVER TEXT
+  textSize(50);
+  fill(255,0,0);
+  text("Try Again!", 0, -20);
+
+imageMode(CENTER);
+  image(dinoGif2, 0, 0, 360, 210);
+  pop();
+
+  return;
+}
 
 // time out before game start
 if (this.inputLocked) {
@@ -180,6 +219,11 @@ image(currentMaze, canvas.x / 2, canvas.y / 2, mazeWidth, mazeHeight);
 
     if (isWall && mouseIsPressed && this.canLoseHeart && this.hearts > 0) {
       this.hearts -= 1;
+      if (this.hearts <= 0) {
+  this.showGameOver = true;
+  this.rewardScale = 0;
+  return;
+}
       this.canLoseHeart = false;
       this.trailLayer.clear();
 
