@@ -19,6 +19,10 @@ class MazePage extends Page {
 
     // Gameplay Variables
     this.trailLayer = createGraphics(canvas.x, canvas.y);
+    this.lastX = null;
+this.lastY = null;
+this.smoothX = null;
+this.smoothY = null;
     this.maxHearts = 3;
     this.hearts = this.maxHearts;
     this.canLoseHeart = true;
@@ -35,6 +39,10 @@ class MazePage extends Page {
     this.rewardScale = 0;
     this.gameOverScale = 0;
     this.confetti = [];
+
+    
+
+    
   }
 
   enter() {
@@ -174,25 +182,25 @@ class MazePage extends Page {
     push();
     imageMode(CENTER);
 
-    const mazeWidth = canvas.x * 0.4;
-    const mazeHeight = canvas.y * 0.55;
+    const mazeWidth = canvas.x * 0.48;
+    const mazeHeight = canvas.y * 0.63;
 
     let currentMaze;
     let goal;
 
     switch (difficulty) {
       case 'easy':
-        currentMaze = maze2;
-        goal = { x: 495, y: 110 };
+        currentMaze = maze3;
+        goal = { x: 495, y: 150 };
         break;
 
       case 'medium':
-        currentMaze = maze1;
-        goal = { x: 425, y: 100 };
+        currentMaze = maze2;
+        goal = { x: 500, y: 140 };
         break;
 
       case 'hard':
-        currentMaze = maze3;
+        currentMaze = maze2;
         goal = { x: 800, y: 450 };
         break;
 
@@ -237,20 +245,42 @@ class MazePage extends Page {
     //-----------------------------------------
     // DRAW TRAIL
     //-----------------------------------------
-    if (mouseIsPressed && this.hearts > 0) {
-      this.trailLayer.noStroke();
-      this.trailLayer.fill(isWall ? "red" : "orange");
-      this.trailLayer.circle(mx, my, 15);
-    }
+   if (mouseIsPressed && this.hearts > 0) {
+  // initialize smoothed position first frame
+  if (this.smoothX === null) {
+    this.smoothX = mx;
+    this.smoothY = my;
+  }
 
-    image(this.trailLayer, 0, 0);
+  // move smoothed point toward real mouse
+  this.smoothX = lerp(this.smoothX, mx, 0.185); // smaller = smoother
+  this.smoothY = lerp(this.smoothY, my, 0.185);
 
+  this.trailLayer.stroke(isWall ? "red" : "orange");
+  this.trailLayer.strokeWeight(12);
+  this.trailLayer.strokeCap(ROUND);
+
+  if (this.lastX !== null && this.lastY !== null) {
+    this.trailLayer.line(this.lastX, this.lastY, this.smoothX, this.smoothY);
+  }
+
+  this.lastX = this.smoothX;
+  this.lastY = this.smoothY;
+} else {
+  // reset when not drawing
+  this.lastX = null;
+  this.lastY = null;
+  this.smoothX = null;
+  this.smoothY = null;
+}
+
+image(this.trailLayer, 0, 0);
     //-----------------------------------------
     // GOAL
     //-----------------------------------------
-    noFill();
+    fill(0);
     noStroke();
-    circle(goal.x, goal.y, 40);
+    circle(goal.x, goal.y, 30);
 
     let d = dist(mx, my, goal.x, goal.y);
 
