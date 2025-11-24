@@ -15,6 +15,26 @@ let pageLastClicked = Date.now();
 
 let finalScore = 0; // Used later in the end page
 
+const starRatings = {
+    eggs: [
+        500,
+        1000,
+        1500,
+        2000,
+        2500,
+    ],
+    asteroid: [
+        200,
+        600,
+        1200,
+        2000,
+        3000,
+    ],
+    maze: [
+        // idk
+    ]
+}
+
 // // ! Remove later
 // difficulty = "easy";
 // nextPage = "asteroid";
@@ -60,6 +80,11 @@ function preload() {
     eggCracked = loadImage("assets/eggCracked.png");
     egg2 = loadImage("assets/egg2.png");
     eggBG = loadImage("assets/eggGameBG.png");
+    dinoGif = loadImage("assets/dino.gif");
+    dinoGif2 = loadImage("assets/dino2.gif");
+    dinoGif3 = loadImage("assets/dino3.gif");
+    dinolose = loadImage("assets/dinolose.gif");
+     maze3 = loadImage("assets/maze3.png");
 }
 
 // Drawings to only call once
