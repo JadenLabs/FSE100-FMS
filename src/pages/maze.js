@@ -47,6 +47,7 @@ class MazePage extends Page {
     this.showGameOver = false;
     
     // Animation
+    this.randomDino = null;
     this.rewardScale = 0;
     this.confetti = [];
   }
@@ -68,7 +69,7 @@ class MazePage extends Page {
     this.showGameOver = false;
     this.rewardScale = 0;
     this.trailLayer.clear();
-    this.inputLocked = true; // Require click release
+    this.inputLocked = true;
     
     this.lastX = null;
     this.lastY = null;
@@ -100,9 +101,7 @@ class MazePage extends Page {
   // ------------------------------------------------
   drawPopupBtn(label, x, y, w, h, btnColor) {
     let clicked = false;
-    
-    // Calculate global coordinates because we are inside a translate()
-    // The popup is centered at (canvas.x/2, canvas.y/2)
+
     let globalX = (canvas.x / 2) + x;
     let globalY = (canvas.y / 2) + y;
     
@@ -195,16 +194,16 @@ class MazePage extends Page {
     // Pick maze based on difficulty
     switch (difficulty) {
       case 'easy':
-        currentMaze = maze3;
-        goal = { x: 495, y: 150 };
+        currentMaze = maze1;
+        goal = { x: 440, y: 115 };
         break;
       case 'medium':
         currentMaze = maze2;
         goal = { x: 500, y: 140 };
         break;
       case 'hard':
-        currentMaze = maze2;
-        goal = { x: 800, y: 450 };
+        currentMaze = maze3;
+        goal = { x: 335, y: 80};
         break;
       default:
         currentMaze = maze2;
@@ -269,16 +268,14 @@ class MazePage extends Page {
 
     // 8. CHECK GOAL
     noStroke();
-    // Debug goal circle (optional, can remove fill if invisible)
     fill(0, 255, 0, 50); 
-    circle(goal.x, goal.y, 40);
-
+    circle(goal.x, goal.y, 25);
     let d = dist(mx, my, goal.x, goal.y);
-    if (d < 30 && mouseIsPressed && this.hearts > 0) {
+    if (d < 10 && mouseIsPressed && this.hearts > 0) {
       this.levelComplete();
     }
 
-    pop(); // End Shake
+    pop(); 
 
     // 9. UI ELEMENTS
     drawGameTitle({ title: "Maze", widthOffset: 90, yOffset: -20 });
@@ -315,6 +312,7 @@ class MazePage extends Page {
     this.inputLocked = true;
     this.rewardScale = 0;
     this.confetti = [];
+    this.randomDino = random([dinoGif, dinoGif2, dinoGif3]);
     for (let i = 0; i < 50; i++) {
       this.confetti.push({
         x: random(canvas.x),
@@ -358,7 +356,8 @@ class MazePage extends Page {
     textSize(35);
     text("Great Job!", 0, -120);
     imageMode(CENTER);
-    image(dinoGif, 0, -20, 280, 160); 
+    image(this.randomDino, 0, -20, 280, 160);
+
 
     // --- BUTTONS ---
     
@@ -374,7 +373,7 @@ class MazePage extends Page {
     }
 
     // 3. Next (Green)
-    if (this.drawPopupBtn("Next", 150, 100, 100, 50, "#7ed321")) {
+    if (this.drawPopupBtn("Next", 150, 100, 100, 50, "#69b01cff")) {
         this.nextLevel();
     }
 
@@ -426,7 +425,7 @@ class MazePage extends Page {
     textStyle(BOLD);
     text("Oh No!", 0, -110);
     imageMode(CENTER);
-    image(dinoGif2, 0, 0, 260, 150);
+    image(dinolose, 0, 0, 260, 150);
 
     // --- BUTTONS ---
 

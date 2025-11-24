@@ -82,6 +82,8 @@ function preload() {
     eggBG = loadImage("assets/eggGameBG.png");
     dinoGif = loadImage("assets/dino.gif");
     dinoGif2 = loadImage("assets/dino2.gif");
+    dinoGif3 = loadImage("assets/dino3.gif");
+    dinolose = loadImage("assets/dinolose.gif");
      maze3 = loadImage("assets/maze3.png");
 }
 
