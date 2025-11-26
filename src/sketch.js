@@ -80,10 +80,10 @@ function preload() {
     eggCracked = loadImage("assets/eggCracked.png");
     egg2 = loadImage("assets/egg2.png");
     eggBG = loadImage("assets/eggGameBG.png");
-    dinoGif = loadImage("assets/dino.gif");
-    dinoGif2 = loadImage("assets/dino2.gif");
-    dinoGif3 = loadImage("assets/dino3.gif");
-    dinolose = loadImage("assets/dinolose.gif");
+    // dinoGif = loadImage("assets/dino.gif"); // ! Make smaller
+    // dinoGif2 = loadImage("assets/dino2.gif"); // ! Make smaller
+    // dinoGif3 = loadImage("assets/dino3.gif"); // ! Make smaller
+    // dinolose = loadImage("assets/dinolose.gif"); // ! Make smaller
      maze3 = loadImage("assets/maze3.png");
 }
 
