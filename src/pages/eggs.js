@@ -1,17 +1,7 @@
 class EggsPage extends Page {
   constructor() {
     super("eggs");
-    this.backButton = new BackButton({
-      x: 40,
-      y: 30,
-      h: 45,
-      w: 45,
-      onClick: () => {
-        this.score = 0;
-        changePage("main");
-      },
-    });
-
+    this.backButton = new BackButton();
 
     this.MissClickButton = new MissClickButton({
       x: 100,
@@ -24,8 +14,8 @@ class EggsPage extends Page {
       } }
     });
 
-    this.drawables.push(this.backButton);
     this.clickables.push(this.backButton);
+    this.drawables.push(this.backButton);
     this.drawables.push(this.MissClickButton);
 
     this.score = 0;
