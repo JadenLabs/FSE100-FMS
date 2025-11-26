@@ -192,14 +192,18 @@ class Player extends Button {
         this.draw();
 
         if (mouseIsPressed) {
-            if (mouseX < 0) this.x = 0;
-            else if (mouseX > canvas.x) this.x = canvas.x;
-            if (mouseY < 0) this.y = 0;
-            else if (mouseY > canvas.y) this.y = canvas.y;
+            console.log(mouseX, this.x);
+            if (this.x < 0) this.x = 0;
+            else if (this.x > canvas.x) this.x = canvas.x;
+            if (this.y < 0) this.y = 0;
+            else if (this.y > canvas.y) this.y = canvas.y;
             else {
-                let theta = Math.atan2(mouseY - this.y, mouseX - this.x);
-                this.x += this.speed * Math.cos(theta);
-                this.y += this.speed * Math.sin(theta);
+                if (Math.abs(this.x - mouseX) > 5 || Math.abs(this.y - mouseY) > 5) {
+                    let theta = Math.atan2(mouseY - this.y, mouseX - this.x);
+                    console.log(theta);
+                    this.x += round(this.speed * Math.cos(theta), 0);
+                    this.y += round(this.speed * Math.sin(theta), 0);
+                }
             }
         }
     }
