@@ -123,6 +123,7 @@ class Asteroid {
     this.particles = [];
     this.player = player;
     this.turnSpeed = 0.001;
+    this.theta = 0;
     this.yVelocitySettings = {
       easy: { min: 1, max: 2 },
       medium: { min: 2, max: 3 },
@@ -155,6 +156,7 @@ class Asteroid {
 
     this.x += this.velocity.x;
     this.y += this.velocity.y;
+    this.theta -= this.turnSpeed * 4;
 
     this.spawnParticle();
 
@@ -180,7 +182,17 @@ class Asteroid {
   }
 
   draw() {
-    image(asteroid, this.x, this.y, this.radius * 2, this.radius * 2);
+    push();
+    translate(this.x + this.radius, this.y + this.radius);
+    rotate(this.theta);
+    image(
+      asteroid,
+      -this.radius,
+      -this.radius,
+      this.radius * 2,
+      this.radius * 2
+    );
+    pop();
   }
 
   randomVelocity(min, max) {
