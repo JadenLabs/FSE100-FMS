@@ -5,16 +5,7 @@ class MazePage extends Page {
     // ------------------------------------------------
     // 1. BACK BUTTON (Top Left)
     // ------------------------------------------------
-    this.backButton = new BackButton({
-      x: 40,
-      y: 30,
-      h: 45,
-      w: 45,
-      onClick: () => {
-        this.resetLevel();
-        changePage("main");
-      },
-    });
+    this.backButton = new BackButton();
 
     this.drawables.push(this.backButton);
     this.clickables.push(this.backButton);
