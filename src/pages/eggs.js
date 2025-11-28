@@ -261,8 +261,10 @@ class EggButton extends Button {
     this.lastUpdateTime = currentTime;
 
     if (this.lifeLeft <= 0) {
-      this.parent.score -= 10;
-      this.parent.missClick();  // Call missClick when egg times out!
+      if(this.parent.score>0){
+        this.parent.score -= 10;
+      }
+      this.parent.missClick();
       this.visible = false;
       this.showStars = false;
       this.lastUpdateTime = null;
