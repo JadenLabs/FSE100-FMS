@@ -298,7 +298,10 @@ class EggButton extends Button {
       return;
     }
 
-    image(eggImg, this.x - this.w / 2, this.y - this.h / 2, this.w, this.h);
+
+    let stage = 4 - ceil((this.lifeLeft / this.maxLife) * 4);
+    let eggImage = getEggByStage(stage);
+    image(eggImage, this.x - this.w / 2, this.y - this.h / 2, this.w, this.h);
   }
 }
 
