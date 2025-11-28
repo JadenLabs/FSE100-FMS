@@ -8,10 +8,12 @@ class EggsPage extends Page {
       y: 150,
       w: 1250,
       h: 450,
-      onClick: () => { if(this.score > 0){
-        this.missClick();
-        this.score = this.score - 100;
-      } }
+      onClick: () => {
+        if (this.score > 0) {
+          this.missClick();
+          this.score = this.score - 100;
+        }
+      },
     });
 
     this.clickables.push(this.backButton);
@@ -25,9 +27,7 @@ class EggsPage extends Page {
     this.timerActive = true;
     this.timerElapsed = 0; // milliseconds
 
-
     switch (difficulty) {
-
       case "easy":
         console.log(difficulty);
         this.scoreInc = 100;
@@ -50,9 +50,6 @@ class EggsPage extends Page {
           55
         );
         break;
-
-
-
 
       case "medium":
         console.log(difficulty);
@@ -82,9 +79,6 @@ class EggsPage extends Page {
           55
         );
         break;
-
-
-
 
       case "hard":
         console.log(difficulty);
@@ -130,31 +124,30 @@ class EggsPage extends Page {
     this.eggs.push(egg);
     this.drawables.push(egg);
     this.clickables.push(egg);
-
   }
   missClick() {
-  this.MissClickButton.damage = 80;
-  setTimeout(() => this.MissClickButton.damage = 0, 400);
-}
+    this.MissClickButton.damage = 80;
+    setTimeout(() => (this.MissClickButton.damage = 0), 400);
+  }
 
   onEggClicked(egg) {
-  if (egg.visible) {
-    this.score += this.scoreInc;
-    egg.showStars = true; 
-    egg.visible = false;
-    this.delayEgg(egg, random(500, 3000));
+    if (egg.visible) {
+      this.score += this.scoreInc;
+      egg.showStars = true;
+      egg.visible = false;
+      this.delayEgg(egg, random(500, 3000));
+    } else {
+      this.score += 0;
+    }
   }
-  else {
-    this.score += 0;
-  }
-}
 
   updateTimer() {
     if (!this.timerActive) return;
 
     this.timerElapsed += deltaTime; // add frame time
 
-    if (this.timerElapsed >= 1000) { // 1 second passed
+    if (this.timerElapsed >= 1000) {
+      // 1 second passed
       this.timerValue--;
       this.timerElapsed = 0;
     }
@@ -167,16 +160,15 @@ class EggsPage extends Page {
   }
 
   delayEgg(egg, time) {
-  setTimeout(() => {
-    egg.visible = true;
-    egg.showStars = false;
-    egg.x = Math.floor(random(50, canvas.x - 50));
-    egg.y = Math.floor(random(75, canvas.y - 50));
-    egg.lifeLeft = egg.maxLife;
-    egg.lastUpdateTime = null;
-  }, time);
-}
-
+    setTimeout(() => {
+      egg.visible = true;
+      egg.showStars = false;
+      egg.x = Math.floor(random(50, canvas.x - 50));
+      egg.y = Math.floor(random(75, canvas.y - 50));
+      egg.lifeLeft = egg.maxLife;
+      egg.lastUpdateTime = null;
+    }, time);
+  }
 
   show() {
     image(eggBG, 0, 0, canvas.x, canvas.y);
@@ -190,17 +182,24 @@ class EggsPage extends Page {
     this.updateTimer();
     text("Score: " + this.score, canvas.x - 145, canvas.y - 315);
     textSize(25);
-    text("Time left: "+ this.timerValue, canvas.x - 570, canvas.y - 320);
+    text("Time left: " + this.timerValue, canvas.x - 570, canvas.y - 320);
     if (this.timerValue <= 0) {
-            finalScore = this.score;
-            changePage("end");
-        }
+      finalScore = this.score;
+      changePage("end");
+    }
   }
-
 }
 class EggButton extends Button {
   constructor({ x, y, w, h, parent }) {
-    super({ x, y, w, h, onClick: () => { parent.onEggClicked(this); } });
+    super({
+      x,
+      y,
+      w,
+      h,
+      onClick: () => {
+        parent.onEggClicked(this);
+      },
+    });
 
     this.x = x;
     this.y = y;
@@ -233,7 +232,6 @@ class EggButton extends Button {
     this.visible = true;
     this.showStars = false;
 
-    
     this.lifeLeft = this.maxLife;
   }
 
@@ -246,17 +244,17 @@ class EggButton extends Button {
 
     let currentTime = Date.now();
     let timePassed = currentTime - this.lastUpdateTime;
-    
+
     this.lifeLeft -= timePassed;
     this.lastUpdateTime = currentTime;
 
     if (this.lifeLeft <= 0) {
       this.parent.score -= 10;
-      this.parent.missClick();  // Call missClick when egg times out!
+      this.parent.missClick(); // Call missClick when egg times out!
       this.visible = false;
       this.showStars = false;
       this.lastUpdateTime = null;
-      
+
       this.parent.delayEgg(this, random(500, 3000));
     }
   }
@@ -284,12 +282,18 @@ class EggButton extends Button {
 
   show() {
     this.shake();
-    
+
     if (!this.visible && this.showStars) {
-      image(stars, this.x - (this.w / 2) - 10, this.y - (this.h / 2), this.w + 30, this.h + 30);
+      image(
+        stars,
+        this.x - this.w / 2 - 10,
+        this.y - this.h / 2,
+        this.w + 30,
+        this.h + 30
+      );
       return;
     }
-    
+
     if (!this.visible) {
       return;
     }
@@ -297,7 +301,6 @@ class EggButton extends Button {
     image(eggImg, this.x - this.w / 2, this.y - this.h / 2, this.w, this.h);
   }
 }
-
 
 class MissClickButton extends Button {
   constructor({ x, y, w, h, onClick }) {
@@ -311,7 +314,7 @@ class MissClickButton extends Button {
   }
 
   show() {
-    fill(250,0,0,this.damage);
+    fill(250, 0, 0, this.damage);
     rect(this.x, this.y, this.w, this.h);
   }
 }
