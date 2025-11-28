@@ -39,7 +39,8 @@ class AsteroidPage extends Page {
     }
     this.lives = this.maxLives;
     this.score = 0;
-    this.gameElapesedTimeMS = 0;
+    this.gameElapesedTimeMS = -500;
+    this.timeHit;
 
     this.drawables.push(this.backButton);
     this.clickables.push(this.backButton, this.player);
@@ -52,6 +53,30 @@ class AsteroidPage extends Page {
   }
 
   show() {
+    // Shake
+    let timeSinceHit = this.gameElapesedTimeMS - this.timeHit;
+    if (this.timeHit && timeSinceHit < 500) {
+      let shakeMagnitude = map(timeSinceHit, 0, 500, 6.7, 0);
+      let shakeX = random(-shakeMagnitude, shakeMagnitude);
+      let shakeY = random(-shakeMagnitude, shakeMagnitude);
+      translate(shakeX, shakeY);
+    } else if (!this.timeHit || timeSinceHit >= 500) {
+      for (let asteroid of this.asteroids) {
+        let distance = dist(
+          asteroid.x + asteroid.radius,
+          asteroid.y + asteroid.radius,
+          this.player.x,
+          this.player.y
+        );
+        if (distance >= 150) continue;
+        let shakeMagnitude = map(distance, 150, 0, 0, 2);
+        let shakeX = random(-shakeMagnitude, shakeMagnitude);
+        let shakeY = random(-shakeMagnitude, shakeMagnitude);
+        translate(shakeX, shakeY);
+        break;
+      }
+    }
+
     this.gameElapesedTimeMS += deltaTime;
     image(asteroidbg, 0, 0, canvas.x, canvas.y);
     drawGameTitle({ title: "Asteroid", widthOffset: 90, yOffset: -20 });
@@ -88,6 +113,11 @@ class AsteroidPage extends Page {
       base_y: 20,
     });
     displayScore({ score: this.score });
+
+    if (this.timeHit && timeSinceHit < 500) {
+      let alpha = map(timeSinceHit, 0, 500, 0.4, 0);
+      drawVignette([200, 0, 0, alpha], [200, 0, 0, alpha]);
+    }
   }
 
   handleCollision(asteroid) {
@@ -96,8 +126,13 @@ class AsteroidPage extends Page {
     // Reset asteroid positions
     asteroid.resetPosition();
 
-    // Get egg
+    // Update time hit
+    this.timeHit = this.gameElapesedTimeMS;
+
     // Break egg
+    this.player.hits++;
+
+    // Decrease lives
     this.lives--;
     if (this.lives <= 0) {
       finalScore = this.score;
@@ -182,6 +217,19 @@ class Asteroid {
   }
 
   draw() {
+    // Do something when near player
+    let distance = dist(
+      this.x + this.radius,
+      this.y + this.radius,
+      this.player.x,
+      this.player.y
+    );
+    if (distance < 150) {
+      fill(214, 84, 24, map(distance, 0, 150, 150, 0));
+      noStroke();
+      circle(this.x + this.radius, this.y + this.radius, 150 - distance);
+    }
+
     push();
     translate(this.x + this.radius, this.y + this.radius);
     rotate(this.theta);
@@ -230,6 +278,7 @@ class Player extends Button {
     Object.assign(this, { x, y, w, h });
     this.isDragging = false;
     this.speed = 5;
+    this.hits = 0;
   }
 
   update() {
@@ -253,7 +302,8 @@ class Player extends Button {
 
   draw() {
     fill(255);
-    image(eggImg, this.x - this.w / 2, this.y - this.h / 2, this.w, this.h);
+    let eggImage = getEggByStage(this.hits);
+    image(eggImage, this.x - this.w / 2, this.y - this.h / 2, this.w, this.h);
   }
 }
 
