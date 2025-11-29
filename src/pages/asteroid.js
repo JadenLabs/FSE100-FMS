@@ -1,3 +1,6 @@
+// Personal best: 16 asteroids on screen (max of 20)
+// Check the console to see how many asteroids on are on screen
+// -J
 class AsteroidPage extends Page {
   constructor() {
     super("asteroid");
@@ -25,6 +28,8 @@ class AsteroidPage extends Page {
       );
     }
 
+    this.powers = [new Shield({ player: this.player })];
+
     this.maxLives = 3;
     switch (difficulty) {
       case "easy":
@@ -50,6 +55,7 @@ class AsteroidPage extends Page {
     super.enter();
     rectMode(CENTER);
     textAlign(CENTER, CENTER);
+    gameBegin.play(0, 1, 1, 0, 1);
   }
 
   show() {
@@ -102,6 +108,14 @@ class AsteroidPage extends Page {
       }
     }
 
+    for (let power of this.powers) {
+      power.update();
+      if (checkCircleCollision(power, this.player)) {
+        power.onCollide();
+        power.resetPosition();
+      };
+    }
+
     this.backButton.show();
 
     this.player.update();
@@ -130,12 +144,19 @@ class AsteroidPage extends Page {
     this.timeHit = this.gameElapesedTimeMS;
 
     // Break egg
+    if (this.player.hasShield) {
+      this.player.hasShield = false;
+      shieldDown.play(0, 1.25, 1, 0, 1);
+      return;
+    }
     this.player.hits++;
+    smallEggCrack.play();
 
     // Decrease lives
     this.lives--;
     if (this.lives <= 0) {
       finalScore = this.score;
+      gameWin.play(0.5);
       changePage("end");
     }
   }
@@ -230,6 +251,7 @@ class Asteroid {
       circle(this.x + this.radius, this.y + this.radius, 150 - distance);
     }
 
+    // Rotate and draw asteroid
     push();
     translate(this.x + this.radius, this.y + this.radius);
     rotate(this.theta);
@@ -304,6 +326,16 @@ class Player extends Button {
     fill(255);
     let eggImage = getEggByStage(this.hits);
     image(eggImage, this.x - this.w / 2, this.y - this.h / 2, this.w, this.h);
+
+    if (this.hasShield) {
+      image(
+        shieldOverlay,
+        this.x - this.w / 2 - 5,
+        this.y - this.h / 2 - 5,
+        this.w + 10,
+        this.h + 10
+      );
+    }
   }
 }
 
@@ -344,4 +376,79 @@ function checkCollion(asteroid, player) {
   }
 
   return false;
+}
+
+function checkCircleCollision(obj1, obj2) {
+  let r2 = obj2.radius ?? Math.max(obj2.w, obj2.h) / 2;
+  let distance = dist(
+    obj1.x + obj1.radius,
+    obj1.y + obj1.radius,
+    obj2.x,
+    obj2.y
+  );
+  return distance < obj1.radius + r2;
+}
+
+
+class Power {
+  constructor({ player, onCollide = () => {}, radius = 23 } = {}) {
+    this.player = player;
+    this.radius = radius;
+    this.onCollide = onCollide;
+    this.resetPosition();
+    this.collected = false;
+  }
+
+  resetPosition() {
+    this.x = random(0, canvas.x - this.radius * 2);
+    this.y = random(0, canvas.y - this.radius * 2);
+  }
+
+  update() {
+    this.show();
+  }
+}
+
+class Shield extends Power {
+  constructor({ player, radius = 18 } = {}) {
+    super({
+      player,
+      radius,
+      onCollide: () => {
+        if (this.collected) return;
+
+        console.log("Shield collected!");
+        this.resetPosition();
+        this.collected = true;
+        this.player.hasShield = true;
+      },
+    });
+  }
+
+  show() {
+    if (this.player.hasShield) {
+      return;
+    } else {
+      this.collected = false;
+    }
+
+    image(shield, this.x, this.y, this.radius * 2, this.radius * 2);
+  }
+}
+
+class Heal extends Power {
+  constructor({ player, radius = 18, addLife } = {}) {
+    super({
+      player,
+      radius,
+      onCollide: () => {
+        if (this.collected) return;
+        console.log("Heal collected!");
+        this.resetPosition();
+        this.collected = true;
+        if (this.player.hits > 0) this.player.hits--;
+        addLife();
+      },
+    });
+  }
 }
