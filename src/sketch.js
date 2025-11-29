@@ -54,8 +54,9 @@ function changePage(id) {
 }
 
 // Stuff done before calling setup
-// LOAD IMAGES HERE
+// LOAD IMAGES AND AUDIO HERE
 function preload() {
+  // IMAGE ASSETS
   backgroundImg = loadImage("assets/background.jpg");
   mazebg = loadImage("assets/mazebg.png");
   maze1 = loadImage("assets/maze1.png");
@@ -74,11 +75,26 @@ function preload() {
   eggBreak2 = loadImage("assets/eggBreak2.png");
   eggBreak3 = loadImage("assets/eggBreak3.png");
   eggBreak4 = loadImage("assets/eggBreak4.png");
+  shield = loadImage("assets/shield.png");
+  shieldOverlay = loadImage("assets/shieldOverlay.png");
   // dinoGif = loadImage("assets/dino.gif"); // ! Make smaller
   // dinoGif2 = loadImage("assets/dino2.gif"); // ! Make smaller
   // dinoGif3 = loadImage("assets/dino3.gif"); // ! Make smaller
   // dinolose = loadImage("assets/dinolose.gif"); // ! Make smaller
   maze3 = loadImage("assets/maze3.png");
+
+  // AUDIO ASSETS
+  gameBegin = loadSound("assets/audio/gameBegin.mp3");
+  gameBegin.setVolume(0.5);
+  gameWin = loadSound("assets/audio/gameWin.mp3");
+  gameWin.setVolume(0.5);
+  goodDing = loadSound("assets/audio/goodDing.mp3");
+  metalPipe = loadSound("assets/audio/metalPipe.mp3"); // We need to add this somewhere
+  shine = loadSound("assets/audio/shine.mp3");
+  smallEggCrack = loadSound("assets/audio/smallEggCrack.mp3");
+  uiButtonClick = loadSound("assets/audio/uiButtonClick.mp3");
+  uiButtonHover = loadSound("assets/audio/uiButtonHover.mp3");
+  shieldDown = loadSound("assets/audio/shieldDown.mp3");
 }
 
 // Drawings to only call once
