@@ -22,6 +22,7 @@ class EndPage extends Page {
         hoverColor: "#f7e3a3ff",
         cornerRadius: 7,
         onClick: () => {
+          uiButtonClick.play();
           changePage("difficulty");
         },
       }),
@@ -33,6 +34,7 @@ class EndPage extends Page {
         hoverColor: "#a3dcefff",
         cornerRadius: 7,
         onClick: () => {
+          uiButtonClick.play();
           changePage("main");
         },
       }),

@@ -5,6 +5,7 @@ class BackButton extends Button {
     h = 45,
     w = 55,
     onClick = () => {
+      uiButtonClick.play();
       changePage("main");
     },
   } = {}) {

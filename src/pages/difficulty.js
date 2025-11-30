@@ -12,6 +12,7 @@ class DifficultyPage extends Page {
         buttonColor: "#8BC34A",
         hoverColor: "#76A53F",
         onClick: () => {
+          uiButtonClick.play();
           difficulty = "easy";
           changePage(nextPage);
         },
@@ -23,6 +24,7 @@ class DifficultyPage extends Page {
         buttonColor: "#CCAE4F",
         hoverColor: "#B79C47",
         onClick: () => {
+          uiButtonClick.play();
           difficulty = "medium";
           changePage(nextPage);
         },
@@ -34,6 +36,7 @@ class DifficultyPage extends Page {
         buttonColor: "#C6635D",
         hoverColor: "#B65B56",
         onClick: () => {
+          uiButtonClick.play();
           difficulty = "hard";
           changePage(nextPage);
         },
