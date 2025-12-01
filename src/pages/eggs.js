@@ -128,6 +128,7 @@ class EggsPage extends Page {
   }
   missClick() {
     this.MissClickButton.damage = 80;
+    smallEggCrack.play();
     setTimeout(() => (this.MissClickButton.damage = 0), 400);
   }
 
@@ -251,7 +252,7 @@ class EggButton extends Button {
     this.lastUpdateTime = currentTime;
 
     if (this.lifeLeft <= 0) {
-      if(this.parent.score>0){
+      if (this.parent.score > 0) {
         this.parent.score -= 10;
       }
       this.parent.missClick();
