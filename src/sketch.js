@@ -18,11 +18,11 @@ let finalScore = 0; // Used later in the end page
 let vignette; // For darkening edges
 
 const starRatings = {
-  eggs: [500, 1000, 1500, 2000, 2500],
-  asteroid: [200, 600, 1200, 2000, 3000],
-  maze: [
-    // idk
-  ],
+    eggs: [500, 1000, 1500, 2000, 2500],
+    asteroid: [200, 600, 1200, 2000, 3000],
+    maze: [
+        // idk
+    ],
 };
 
 // // ! Remove later
@@ -32,25 +32,25 @@ const starRatings = {
 
 // Check if a page was clicked after N time
 function pageClickedWithin(ms) {
-  return Date.now() - pageLastClicked < ms;
+    return Date.now() - pageLastClicked < ms;
 }
 
 // Function to change pages
 function changePage(id) {
-  console.log({
-    page: id,
-    time: Date.now(),
-    finalScore,
-    difficulty,
-    nextPage,
-  });
-  if (active_page) active_page.exit();
-  if (pages[id] === undefined) {
-    console.error(`Page "${id}" does not exist!`);
-    return;
-  }
-  active_page = new pages[id]();
-  active_page.enter();
+    console.log({
+        page: id,
+        time: Date.now(),
+        finalScore,
+        difficulty,
+        nextPage,
+    });
+    if (active_page) active_page.exit();
+    if (pages[id] === undefined) {
+        console.error(`Page "${id}" does not exist!`);
+        return;
+    }
+    active_page = new pages[id]();
+    active_page.enter();
 }
 
 // Stuff done before calling setup
@@ -78,58 +78,72 @@ function preload() {
   eggBreak4 = loadImage("assets/eggBreak4.png");
   shield = loadImage("assets/shield.png");
   shieldOverlay = loadImage("assets/shieldOverlay.png");
-  // dinoGif = loadImage("assets/dino.gif"); // ! Make smaller
-  // dinoGif2 = loadImage("assets/dino2.gif"); // ! Make smaller
-  // dinoGif3 = loadImage("assets/dino3.gif"); // ! Make smaller
-  // dinolose = loadImage("assets/dinolose.gif"); // ! Make smaller
+  dinoGif = loadImage("assets/dino.gif"); // ! Make smaller
+   dinoGif2 = loadImage("assets/dino2.gif"); // ! Make smaller
+   dinoGif3 = loadImage("assets/dino3.gif"); // ! Make smaller
+   dinolose = loadImage("assets/dinolose.gif"); // ! Make smaller
   maze3 = loadImage("assets/maze3.png");
+   eggGameIcon = loadImage("assets/eggGameIcon.png");
+    asteroidGameIcon = loadImage("assets/asteroidGameIcon.png");
+    mazeGameIcon = loadImage("assets/mazeGameIcon.png");
+     mazemain = loadImage("assets/mazemain.png");
 
-  // AUDIO ASSETS
-  gameBegin = loadSound("assets/audio/gameBegin.mp3");
-  gameBegin.setVolume(0.5);
-  gameWin = loadSound("assets/audio/gameWin.mp3");
-  gameWin.setVolume(0.5);
-  goodDing = loadSound("assets/audio/goodDing.mp3");
-  metalPipe = loadSound("assets/audio/metalPipe.mp3"); // We need to add this somewhere
-  shine = loadSound("assets/audio/shine.mp3");
-  smallEggCrack = loadSound("assets/audio/smallEggCrack.mp3");
-  uiButtonClick = loadSound("assets/audio/uiButtonClick.mp3");
-  uiButtonHover = loadSound("assets/audio/uiButtonHover.mp3");
-  shieldDown = loadSound("assets/audio/shieldDown.mp3");
+
+    // AUDIO ASSETS
+    gameBegin = loadSound("assets/audio/gameBegin.mp3");
+    gameBegin.setVolume(0.5);
+    gameWin = loadSound("assets/audio/gameWin.mp3");
+    gameWin.setVolume(0.5);
+    goodDing = loadSound("assets/audio/goodDing.mp3");
+    metalPipe = loadSound("assets/audio/metalPipe.mp3"); // We need to add this somewhere
+    shine = loadSound("assets/audio/shine.mp3");
+    smallEggCrack = loadSound("assets/audio/smallEggCrack.mp3");
+    uiButtonClick = loadSound("assets/audio/uiButtonClick.mp3");
+    uiButtonHover = loadSound("assets/audio/uiButtonHover.mp3");
+    shieldDown = loadSound("assets/audio/shieldDown.mp3");
+    gameMusic = loadSound("assets/audio/gameMusic.mp3");
+    rumbleSound = loadSound("assets/audio/rumble.mp3");
+    sfx_wallhit = loadSound("assets/audio/wallhit.mp3");
+    sfx_win = loadSound("assets/audio/winning.mp3");
+    sfx_lose = loadSound("assets/audio/gamelose.mp3");
+    sfx_spark = loadSound("assets/audio/spark.mp3");
 }
-
 // Drawings to only call once
 function setup() {
-  const cnv = createCanvas(canvas.x, canvas.y);
-  cnv.parent("game");
+    const cnv = createCanvas(canvas.x, canvas.y);
+    cnv.parent("game");
 
-  vignette = createGraphics(canvas.x, canvas.y);
-  vignette.noStroke();
+    vignette = createGraphics(canvas.x, canvas.y);
+    vignette.noStroke();
 
-  const maxR = max(canvas.x, canvas.y);
+    const maxR = max(canvas.x, canvas.y);
 
-  for (let r = 0; r < maxR; r++) {
-    let alpha = map(r, 0, maxR, 0, 255);
-    vignette.fill(0, alpha);
-    vignette.ellipse(canvas.x / 2, canvas.y / 2, r * 2);
-  }
+    for (let r = 0; r < maxR; r++) {
+        let alpha = map(r, 0, maxR, 0, 255);
+        vignette.fill(0, alpha);
+        vignette.ellipse(canvas.x / 2, canvas.y / 2, r * 2);
+    }
 
-  pages = {
-    main: MainPage,
-    eggs: EggsPage,
-    maze: MazePage,
-    asteroid: AsteroidPage,
-    difficulty: DifficultyPage,
-    end: EndPage,
-  };
+    pages = {
+        main: MainPage,
+        eggs: EggsPage,
+        maze: MazePage,
+        asteroid: AsteroidPage,
+        difficulty: DifficultyPage,
+        end: EndPage,
+    };
 
-  changePage("main");
+    changePage("main");
 
-  rectMode(CENTER);
-  textAlign(CENTER, CENTER);
+    rectMode(CENTER);
+    textAlign(CENTER, CENTER);
+
+    gameMusic.setLoop(true);
+    gameMusic.play();
+    gameMusic.setVolume(0.2);
 }
 
 // Called every frame update
 function draw() {
-  active_page.update();
+    active_page.update();
 }
