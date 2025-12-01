@@ -12,7 +12,7 @@ class MainPage extends Page {
         buttonColor: "#FFAB49",
         hoverColor: "#C98537",
         buttonText: "Eggs",
-        onClick: () => { changePage("difficulty"); nextPage = "eggs"; },
+        onClick: () => { uiButtonClick.play(); changePage("difficulty"); nextPage = "eggs"; },
       }),
       new MainMenuButton({
         x: canvas.m.x,
@@ -20,7 +20,7 @@ class MainPage extends Page {
         buttonColor: "#7EA0A1",
         hoverColor: "#627C7C",
         buttonText: "Asteroid",
-        onClick: () => { changePage("difficulty"); nextPage = "asteroid"; },
+        onClick: () => { uiButtonClick.play(); changePage("difficulty"); nextPage = "asteroid"; },
       }),
       new MainMenuButton({
         x: canvas.q[1].x,
@@ -28,7 +28,7 @@ class MainPage extends Page {
         buttonColor: "#ABBC3C",
         hoverColor: "#919F35",
         buttonText: "Maze",
-        onClick: () => { changePage("difficulty"); nextPage = "maze"; },
+        onClick: () => { uiButtonClick.play(); changePage("difficulty"); nextPage = "maze"; },
       }),
     ];
 

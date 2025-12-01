@@ -1,59 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>Dinosaur Island</title>
-        <script src="https://cdn.jsdelivr.net/npm/p5@1.11.5/lib/p5.js"></script>
-        <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-        />
+  <head>
+    <title>Dinosaur Island</title>
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.11.5/lib/p5.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.11.5/lib/addons/p5.sound.min.js"></script>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
 
-        <link rel="stylesheet" type="text/css" href="style.css" />
-        <link rel="icon" href="favicon.ico" type="image/png" />
-        <meta charset="utf-8" />
-        <style>
-            #game {
-                margin: 0 auto;
-                padding: 0;
-                overflow: hidden;
-                border: 5px solid #7faa1c;
-                border-radius: 10px;
-                touch-action: none;
-                overscroll-behavior: none;
-            }
-            body {
-                color: #ffffff;
-                background-color: #09090b;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                height: 100vh;
-                margin: 0;
-                overflow: hidden;
-                touch-action: none;
-            }
-        </style>
-    </head>
-    <body>
-        <!-- <h1 class="header">Play Dinosaur Island Now!</h1> -->
-        <div id="game">
-            <!-- if you create any js files, add them here -->
-            <script src="./utils/button.js"></script>
-            <script src="./utils/backButton.js"></script>
-            <script src="./utils/lives.js"></script>
-            <script src="./utils/stars.js"></script>
-            <script src="./utils/score.js"></script>
-            <script src="./utils/title.js"></script>
-            <script src="./utils/canvas.js"></script>
-            <script src="./utils/page.js"></script>
-            <script src="./pages/main.js"></script>
-            <script src="./pages/difficulty.js"></script>
-            <script src="./pages/asteroid.js"></script>
-            <script src="./pages/eggs.js"></script>
-            <script src="./pages/maze.js"></script>
-            <script src="./pages/end.js"></script>
-            <script src="sketch.js"></script>
-        </div>
-    </body>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <link rel="icon" href="favicon.ico" type="image/png" />
+    <meta charset="utf-8" />
+    <!-- Spooky css -->
+    <style>
+      #game {
+        margin: 0 auto;
+        padding: 0;
+        overflow: hidden;
+        border: 5px solid #7faa1c;
+        border-radius: 10px;
+        touch-action: none;
+        overscroll-behavior: none;
+      }
+      body {
+        color: #ffffff;
+        background-color: #09090b;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        overflow: hidden;
+        touch-action: none;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- <h1 class="header">Play Dinosaur Island Now!</h1> -->
+    <div id="game">
+      <!-- if you create any js files, add them here -->
+      <script src="./utils/vignette.js"></script>
+      <script src="./utils/egg.js"></script>
+      <script src="./utils/button.js"></script>
+      <script src="./utils/backButton.js"></script>
+      <script src="./utils/lives.js"></script>
+      <script src="./utils/stars.js"></script>
+      <script src="./utils/score.js"></script>
+      <script src="./utils/title.js"></script>
+      <script src="./utils/canvas.js"></script>
+      <script src="./utils/page.js"></script>
+      <script src="./pages/main.js"></script>
+      <script src="./pages/difficulty.js"></script>
+      <script src="./pages/asteroid.js"></script>
+      <script src="./pages/eggs.js"></script>
+      <script src="./pages/maze.js"></script>
+      <script src="./pages/end.js"></script>
+      <script src="sketch.js"></script>
+    </div>
+  </body>
 </html>
