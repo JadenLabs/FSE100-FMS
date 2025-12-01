@@ -30,7 +30,7 @@ class MainPage extends Page {
         buttonColor: "#ABBC3C",
         hoverColor: "#919F35",
         buttonText: "Maze",
-        image: maze1,
+        image: mazemain,
         onClick: () => { uiButtonClick.play(); changePage("difficulty"); nextPage = "maze"; },
       }),
     ];

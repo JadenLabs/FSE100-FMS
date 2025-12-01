@@ -83,6 +83,7 @@ function preload() {
    dinoGif3 = loadImage("assets/dino3.gif"); // ! Make smaller
    dinolose = loadImage("assets/dinolose.gif"); // ! Make smaller
   maze3 = loadImage("assets/maze3.png");
+  mazemain = loadImage("assets/mazemain.png");
 
   // AUDIO ASSETS
   gameBegin = loadSound("assets/audio/gameBegin.mp3");
