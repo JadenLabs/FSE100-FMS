@@ -12,7 +12,7 @@ class MainPage extends Page {
         buttonColor: "#FFAB49",
         hoverColor: "#C98537",
         buttonText: "Eggs",
-        image: eggImg,
+        image: eggGameIcon,
         onClick: () => { uiButtonClick.play(); changePage("difficulty"); nextPage = "eggs"; },
       }),
       new MainMenuButton({
@@ -21,7 +21,7 @@ class MainPage extends Page {
         buttonColor: "#7EA0A1",
         hoverColor: "#627C7C",
         buttonText: "Asteroid",
-        image: asteroid,
+        image: asteroidGameIcon,
         onClick: () => { uiButtonClick.play(); changePage("difficulty"); nextPage = "asteroid"; },
       }),
       new MainMenuButton({
@@ -30,7 +30,7 @@ class MainPage extends Page {
         buttonColor: "#ABBC3C",
         hoverColor: "#919F35",
         buttonText: "Maze",
-        image: mazemain,
+        image: mazeGameIcon,
         onClick: () => { uiButtonClick.play(); changePage("difficulty"); nextPage = "maze"; },
       }),
     ];
@@ -93,14 +93,14 @@ class MainMenuButton extends Button {
     noStroke();
     rect(this.x, this.y, this.w, this.h, this.cornerRadius);
 
-    fill("#EAE2D8");
-    rect(this.x, this.y + 70, this.w - 30, 50, this.cornerRadius);
-
     if (this.image) {
       imageMode(CENTER);
-      image(this.image, this.x, this.y - 10, this.h * 0.6, this.h * 0.6);
+      image(this.image, this.x, this.y - 10, this.h * 0.7, this.h * 0.7);
       imageMode(CORNER);
     }
+
+    fill("#EAE2D8");
+    rect(this.x, this.y + 70, this.w - 30, 50, this.cornerRadius);
 
     fill(0);
     textSize(28);
