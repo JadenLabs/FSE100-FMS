@@ -78,10 +78,10 @@ function preload() {
   eggBreak4 = loadImage("assets/eggBreak4.png");
   shield = loadImage("assets/shield.png");
   shieldOverlay = loadImage("assets/shieldOverlay.png");
-  // dinoGif = loadImage("assets/dino.gif"); // ! Make smaller
-  // dinoGif2 = loadImage("assets/dino2.gif"); // ! Make smaller
-  // dinoGif3 = loadImage("assets/dino3.gif"); // ! Make smaller
-  // dinolose = loadImage("assets/dinolose.gif"); // ! Make smaller
+  dinoGif = loadImage("assets/dino.gif"); // ! Make smaller
+   dinoGif2 = loadImage("assets/dino2.gif"); // ! Make smaller
+   dinoGif3 = loadImage("assets/dino3.gif"); // ! Make smaller
+   dinolose = loadImage("assets/dinolose.gif"); // ! Make smaller
   maze3 = loadImage("assets/maze3.png");
 
   // AUDIO ASSETS
@@ -96,8 +96,13 @@ function preload() {
   uiButtonClick = loadSound("assets/audio/uiButtonClick.mp3");
   uiButtonHover = loadSound("assets/audio/uiButtonHover.mp3");
   shieldDown = loadSound("assets/audio/shieldDown.mp3");
-}
+  sfx_wallhit = loadSound('assets/audio/wallhit.mp3');
+  sfx_win = loadSound('assets/audio/winning.mp3');
+  sfx_lose = loadSound('assets/audio/gamelose.mp3');
+  sfx_spark = loadSound('assets/audio/spark.mp3');
+  
 
+}
 // Drawings to only call once
 function setup() {
   const cnv = createCanvas(canvas.x, canvas.y);
