@@ -117,6 +117,7 @@ class EggsPage extends Page {
     }
 
     this.clickables.push(this.MissClickButton);
+    gameBegin.play();
   }
 
   createEgg(x, y, w, h) {
@@ -198,6 +199,7 @@ class EggButton extends Button {
       h,
       onClick: () => {
         parent.onEggClicked(this);
+        goodDing.play();
       },
     });
 
@@ -256,7 +258,7 @@ class EggButton extends Button {
       this.visible = false;
       this.showStars = false;
       this.lastUpdateTime = null;
-
+      smallEggCrack.play();
       this.parent.delayEgg(this, random(500, 3000));
     }
   }

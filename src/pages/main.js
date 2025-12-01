@@ -12,6 +12,7 @@ class MainPage extends Page {
         buttonColor: "#FFAB49",
         hoverColor: "#C98537",
         buttonText: "Eggs",
+        image: eggImg,
         onClick: () => { uiButtonClick.play(); changePage("difficulty"); nextPage = "eggs"; },
       }),
       new MainMenuButton({
@@ -20,6 +21,7 @@ class MainPage extends Page {
         buttonColor: "#7EA0A1",
         hoverColor: "#627C7C",
         buttonText: "Asteroid",
+        image: asteroid,
         onClick: () => { uiButtonClick.play(); changePage("difficulty"); nextPage = "asteroid"; },
       }),
       new MainMenuButton({
@@ -28,6 +30,7 @@ class MainPage extends Page {
         buttonColor: "#ABBC3C",
         hoverColor: "#919F35",
         buttonText: "Maze",
+        image: maze1,
         onClick: () => { uiButtonClick.play(); changePage("difficulty"); nextPage = "maze"; },
       }),
     ];
@@ -68,10 +71,11 @@ class MainMenuButton extends Button {
     buttonColor = "#EAE2D8",
     hoverColor = "#B7B0A8",
     cornerRadius = 30,
+    image = null,
     onClick = () => {},
   }) {
     super({ x, y, w, h, onClick });
-    Object.assign(this, { buttonText, buttonColor, hoverColor, cornerRadius });
+    Object.assign(this, { buttonText, buttonColor, hoverColor, cornerRadius, image });
   }
 
   update() {
@@ -91,6 +95,12 @@ class MainMenuButton extends Button {
 
     fill("#EAE2D8");
     rect(this.x, this.y + 70, this.w - 30, 50, this.cornerRadius);
+
+    if (this.image) {
+      imageMode(CENTER);
+      image(this.image, this.x, this.y - 10, this.h * 0.6, this.h * 0.6);
+      imageMode(CORNER);
+    }
 
     fill(0);
     textSize(28);
