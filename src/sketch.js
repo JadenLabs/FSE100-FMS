@@ -70,6 +70,7 @@ function preload() {
   maze2 = loadImage("assets/maze2.png");
   eggCracked = loadImage("assets/eggCracked.png");
   egg2 = loadImage("assets/egg2.png");
+   egg3 = loadImage("assets/egg3.png");
   eggBG = loadImage("assets/eggGameBG.png");
   eggBreak1 = loadImage("assets/eggBreak1.png");
   eggBreak2 = loadImage("assets/eggBreak2.png");
