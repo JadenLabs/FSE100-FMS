@@ -14,7 +14,6 @@ class MazePage extends Page {
     // 2. GAME VARIABLES
     // ------------------------------------------------
     this.trailLayer = createGraphics(canvas.x, canvas.y);
-    
 
     this.lastX = null;
     this.lastY = null;
@@ -27,7 +26,7 @@ class MazePage extends Page {
     this.shakeTimer = 0;
     this.level = 1;
     this.totalLevels = 3;
-    this.inputLocked = true; 
+    this.inputLocked = true;
     this.showReward = false;
     this.showGameOver = false;
     this.randomDino = null;
@@ -38,15 +37,40 @@ class MazePage extends Page {
     // ---------------------------
     // Timer & Best Time (Feature)
     // ---------------------------
-    this.levelStartTime = null; 
-    this.levelTime = 0;        
-    this.bestTimes = JSON.parse(localStorage.getItem("maze_best_times") || "{}"); // {level_1: 12.34, ...}
+    // sanitized load of bestTimes per-level
+    const _raw = JSON.parse(localStorage.getItem("maze_best_times") || "{}");
+    this.bestTimes = {};
+    for (let k in _raw) {
+      const n = parseFloat(_raw[k]);
+      if (!isNaN(n) && n > 0) this.bestTimes[k] = n;
+    }
+
+    this.levelStartTime = null;
+    this.levelTime = 0;
     this.showHint = false;
-    
+
+    // HUD / animation state for new-best pulse (optional)
+    this.showNewBest = false;
+    this.newBestTimer = 0;
+    this.newBestPulse = 1.0;
+
+    // SOUND references (minimal additions)
+    this.sfx_wallhit = (typeof sfx_wallhit !== 'undefined') ? sfx_wallhit : null;
+    this.sfx_win = (typeof sfx_win !== 'undefined') ? sfx_win : null;
+    this.sfx_lose = (typeof sfx_lose !== 'undefined') ? sfx_lose : null;
+    this.sfx_spark = (typeof sfx_spark !== 'undefined') ? sfx_spark : null; // <--- spark sound
+
+    // internal one-shot flag for lose sound (reset in resetLevel)
+    this._playedLose = false;
+
+    // internal flag to avoid repeatedly calling play()
+    this._playingSpark = false;
   }
 
   enter() {
     super.enter();
+    // keep internal level in sync with difficulty string
+    this.level = this.difficultyToLevel();
     rectMode(CENTER);
     textAlign(CENTER, CENTER);
     this.resetLevel(); // Always start fresh
@@ -70,6 +94,52 @@ class MazePage extends Page {
     this.smoothY = null;
     this.levelStartTime = null;
     this.levelTime = 0;
+
+    // reset lose-play flag so sound can play on next game-over
+    this._playedLose = false;
+
+    // stop spark if it was playing
+    if (this.sfx_spark && this._playingSpark) {
+      try { if (this.sfx_spark.isPlaying && this.sfx_spark.isPlaying()) this.sfx_spark.stop(); } catch(e) {}
+      this._playingSpark = false;
+    }
+  }
+
+  // ------------------------------------------------
+  // Best-time helpers (per level)
+  // ------------------------------------------------
+  getBestTime(levelNum) {
+    const key = `level_${levelNum}`;
+    return this.bestTimes.hasOwnProperty(key) ? this.bestTimes[key] : null;
+  }
+
+  setBestTime(levelNum, timeSec) {
+    if (!timeSec || typeof timeSec !== "number" || timeSec <= 0) return;
+    const key = `level_${levelNum}`;
+    this.bestTimes[key] = timeSec;
+    localStorage.setItem("maze_best_times", JSON.stringify(this.bestTimes));
+  }
+
+  resetBestTimes(levelNum = null) {
+    if (levelNum == null) {
+      this.bestTimes = {};
+    } else {
+      const key = `level_${levelNum}`;
+      delete this.bestTimes[key];
+    }
+    localStorage.setItem("maze_best_times", JSON.stringify(this.bestTimes));
+  }
+
+  // ------------------------------------------------
+  // Convert difficulty string -> canonical level index
+  // ------------------------------------------------
+  difficultyToLevel() {
+    switch (difficulty) {
+      case "easy": return 1;
+      case "medium": return 2;
+      case "hard": return 3;
+      default: return this.level || 1;
+    }
   }
 
   // ------------------------------------------------
@@ -78,14 +148,14 @@ class MazePage extends Page {
   nextLevel() {
     this.level++;
     if (this.level > this.totalLevels) {
-        this.level = 1; 
+      this.level = 1;
     }
-    
+
     // Update global difficulty based on level
     if (this.level === 1) difficulty = "easy";
     if (this.level === 2) difficulty = "medium";
     if (this.level === 3) difficulty = "hard";
-    
+
     this.resetLevel();
   }
 
@@ -97,24 +167,25 @@ class MazePage extends Page {
 
     let globalX = (canvas.x / 2) + x;
     let globalY = (canvas.y / 2) + y;
-    
+
     // Check collision with mouse
     let isHovering = (mouseX > globalX - w/2 && mouseX < globalX + w/2 &&
-     mouseY > globalY - h/2 && mouseY < globalY + h/2);
+      mouseY > globalY - h/2 && mouseY < globalY + h/2);
 
     push();
     rectMode(CENTER);
-    
+
     if (isHovering) {
-        fill(lerpColor(color(btnColor), color(0), 0.2));
+      fill(lerpColor(color(btnColor), color(0), 0.2));
+      cursor(HAND);
     } else {
-        fill(btnColor);
-        cursor(ARROW);
+      fill(btnColor);
+      cursor(ARROW);
     }
-    
+
     stroke(255);
     strokeWeight(3);
-    rect(x, y, w, h, 10); 
+    rect(x, y, w, h, 10);
 
     // Button Text
     fill(255);
@@ -126,12 +197,11 @@ class MazePage extends Page {
     pop();
 
     // Check for Click
-    
     if (isHovering && mouseIsPressed && !this.inputLocked) {
-        clicked = true;
-        this.inputLocked = true; 
+      clicked = true;
+      this.inputLocked = true;
     }
-    
+
     return clicked;
   }
 
@@ -139,23 +209,25 @@ class MazePage extends Page {
   // MAIN DRAW LOOP
   // ------------------------------------------------
   show() {
-    
-    // 1. INPUT LOCK LOGIC (MOVED TO TOP)
+    // 1. INPUT LOCK LOGIC
     if (this.inputLocked) {
       if (!mouseIsPressed) {
         this.inputLocked = false;
       }
     }
 
+    // central tick for new-best timer
+    if (this.newBestTimer > 0) this.newBestTimer--;
+
     // 2. CHECK POPUPS
     if (this.showReward) {
       this.drawWinPopup();
-      return; 
+      return;
     }
 
     if (this.showGameOver) {
       this.drawGameOverPopup();
-      return; 
+      return;
     }
 
     // 3. BACKGROUND
@@ -177,7 +249,7 @@ class MazePage extends Page {
     imageMode(CENTER);
     const mazeWidth = canvas.x * 0.48;
     const mazeHeight = canvas.y * 0.63;
-    
+
     let currentMaze;
     let goal;
     let start;
@@ -187,65 +259,64 @@ class MazePage extends Page {
       case 'easy':
         currentMaze = maze1;
         goal = { x: 457, y: 115};
-         start = { x: 278, y: 255 };
+        start = { x: 278, y: 255 };
         break;
       case 'medium':
         currentMaze = maze2;
         goal = { x: 500, y: 140 };
-         start = { x: 270, y: 250 };
+        start = { x: 270, y: 250 };
         break;
       case 'hard':
         currentMaze = maze3;
         goal = { x: 335, y: 80};
-         start = { x: 335, y: 270 };
+        start = { x: 335, y: 270 };
         break;
       default:
         currentMaze = maze2;
         goal = { x: 200, y: 100 };
-         start = { x: 300, y: 350 };
+        start = { x: 300, y: 350 };
         break;
     }
     image(currentMaze, canvas.x / 2, canvas.y / 2, mazeWidth, mazeHeight);
     pop();
 
-    // 6. WALL COLLISION LOGIC 
+    // 6. WALL COLLISION LOGIC
     const mx = constrain(mouseX, 0, canvas.x - 1);
     const my = constrain(mouseY, 0, canvas.y - 1);
-    
+
     let hitWall = false;
     let pointsToCheck = [{x: mx, y: my}];
 
-    
-    
     if (this.started && this.lastX != null && this.lastY != null) {
-        let d = dist(this.lastX, this.lastY, mx, my);
-       
-        if (d > 5) {
-             let steps = d / 4; 
-             for (let i = 1; i < steps; i++) {
-                 pointsToCheck.push({
-                     x: lerp(this.lastX, mx, i/steps),
-                     y: lerp(this.lastY, my, i/steps)
-                 });
-             }
+      let d = dist(this.lastX, this.lastY, mx, my);
+      if (d > 5) {
+        let steps = d / 4;
+        for (let i = 1; i < steps; i++) {
+          pointsToCheck.push({
+            x: lerp(this.lastX, mx, i/steps),
+            y: lerp(this.lastY, my, i/steps)
+          });
         }
+      }
     }
 
-    // Check all calculated points for walls
     for (let pt of pointsToCheck) {
-        const c = get(pt.x, pt.y);
-        // Check if pixel is dark (wall)
-        if (red(c) < 100 && green(c) < 100 && blue(c) < 100) {
-            hitWall = true;
-            break; // Stop checking if we hit a wall
-        }
+      const c = get(pt.x, pt.y);
+      if (red(c) < 100 && green(c) < 100 && blue(c) < 100) {
+        hitWall = true;
+        break;
+      }
     }
 
     // Apply collision results
     if (hitWall && mouseIsPressed && this.canLoseHeart && this.hearts > 0 && !this.inputLocked && this.started) {
       this.hearts--;
-      this.started = false; 
-      this.levelStartTime = null; 
+
+      // play wall hit sound (existing)
+      if (this.sfx_wallhit) this.sfx_wallhit.play();
+
+      this.started = false;
+      this.levelStartTime = null;
       if (this.hearts <= 0) {
         this.showGameOver = true;
         this.inputLocked = true;
@@ -254,7 +325,7 @@ class MazePage extends Page {
       }
 
       this.canLoseHeart = false;
-      this.trailLayer.clear(); 
+      this.trailLayer.clear();
       this.flashTimer = 15;
       this.shakeTimer = 15;
       setTimeout(() => { this.canLoseHeart = true; }, 1000);
@@ -266,12 +337,11 @@ class MazePage extends Page {
         this.smoothX = mx; this.smoothY = my;
         this.lastX = mx; this.lastY = my;
       }
-      
-      // Smooth mouse movement
-      this.smoothX = lerp(this.smoothX, mx, 0.18); 
+
+      this.smoothX = lerp(this.smoothX, mx, 0.18);
       this.smoothY = lerp(this.smoothY, my, 0.18);
 
-      this.trailLayer.stroke(hitWall ? "red" : "orange"); // Use local hitWall variable
+      this.trailLayer.stroke(hitWall ? "red" : "orange");
       this.trailLayer.strokeWeight(12);
       this.trailLayer.strokeCap(ROUND);
 
@@ -281,64 +351,80 @@ class MazePage extends Page {
 
       this.lastX = this.smoothX;
       this.lastY = this.smoothY;
+
+      // --- START/CONTINUE spark sound while drawing ---
+      if (this.sfx_spark && !this._playingSpark) {
+        try {
+          // short spark: start playing (if it's a looping spark you might want playMode or loop;
+          // here we call play() and mark flag so it doesn't spam)
+          this.sfx_spark.play();
+          this._playingSpark = true;
+        } catch (e) {
+          // ignore playback errors
+        }
+      }
     } else {
+      // stop spark if it was playing and drawing has stopped
+      if (this.sfx_spark && this._playingSpark) {
+        try { if (this.sfx_spark.isPlaying && this.sfx_spark.isPlaying()) this.sfx_spark.stop(); } catch(e) {}
+        this._playingSpark = false;
+      }
+
       this.lastX = null; this.lastY = null;
       this.smoothX = null; this.smoothY = null;
     }
 
     image(this.trailLayer, 0, 0);
 
-    
     // 8. CHECK GOAL & START LOGIC
     push();
     imageMode(CENTER);
-    
+
     // --- START BUTTON (EGG) ---
     image(egg3, start.x, start.y, 30, 35);
 
     let distStart = dist(mx, my, start.x, start.y);
-    
+
     // STARTING: If not started, press start to begin
     if (!this.started && mouseIsPressed && distStart < 20) {
-        this.started = true;
-        this.trailLayer.clear();
-        // start timer
-        this.levelStartTime = millis();
+      this.started = true;
+      this.trailLayer.clear();
+      // start timer
+      this.levelStartTime = millis();
     }
-    
+
     // --- LIFT-OFF PENALTY ---
     if (this.started && !mouseIsPressed) {
-        this.hearts--;
-        this.started = false; // Stop the run
-        this.trailLayer.clear(); // Clear the trail
-        
-        // stop timer because run ended/failed
-        this.levelStartTime = null;
+      this.hearts--;
+      this.started = false; // Stop the run
+      this.trailLayer.clear(); // Clear the trail
 
-        this.flashTimer = 15;
-        this.shakeTimer = 15;
-        
-        if (this.hearts <= 0) {
-            this.showGameOver = true;
-            this.inputLocked = true;
-            this.rewardScale = 0;
-        }
+      // stop timer because run ended/failed
+      this.levelStartTime = null;
+
+      this.flashTimer = 15;
+      this.shakeTimer = 15;
+
+      if (this.hearts <= 0) {
+        this.showGameOver = true;
+        this.inputLocked = true;
+        this.rewardScale = 0;
+      }
     }
 
     // --- GOAL AREA ---
-    if (this.started) fill(0, 170, 255, 160);  // active = bright
-     else fill(135, 206, 235, 160);              // locked = dim
+    if (this.started) fill(0, 170, 255, 160);
+    else fill(135, 206, 235, 160);
     circle(goal.x, goal.y, 30);
 
     let distGoal = dist(mx, my, goal.x, goal.y);
 
     // Win only if started and pressing
     if (this.started && mouseIsPressed && distGoal < 15 && this.hearts > 0) {
-        this.levelComplete();
+      this.levelComplete();
     }
 
     pop();
-
 
     // 9. UI ELEMENTS
     drawGameTitle({ title: "Maze", widthOffset: 90, yOffset: -20 });
@@ -383,15 +469,18 @@ class MazePage extends Page {
 
     // Current run time (live)
     let current = "--";
+    let running = false;
     if (this.levelStartTime) {
       let curSecs = (millis() - this.levelStartTime) / 1000;
       current = nf(curSecs, 0, 2) + "s";
+      running = true;
     } else if (this.levelTime && this.levelTime > 0) {
       current = nf(this.levelTime, 0, 2) + "s"; // last run
     }
 
-    // Best time for this level
-    let key = `level_${this.level}`;
+    // Best time for this difficulty (map difficulty -> level index)
+    const bestLevel = this.difficultyToLevel();
+    let key = `level_${bestLevel}`;
     let best = this.bestTimes[key] ? nf(this.bestTimes[key], 0, 2) + "s" : "--";
 
     // Position (tweak coordinates as you like)
@@ -427,8 +516,12 @@ class MazePage extends Page {
     }
     this.levelStartTime = null; // stop timer
 
-    // store best time per level
-    let key = `level_${this.level}`;
+    // play win sound (minimal addition)
+    if (this.sfx_win) this.sfx_win.play();
+
+    // store best time for the current difficulty (mapped consistently)
+    const bestLevel = this.difficultyToLevel();
+    let key = `level_${bestLevel}`;
     if (!this.bestTimes[key] || (this.levelTime > 0 && this.levelTime < this.bestTimes[key])) {
       this.bestTimes[key] = this.levelTime;
       localStorage.setItem("maze_best_times", JSON.stringify(this.bestTimes));
@@ -485,31 +578,32 @@ class MazePage extends Page {
     imageMode(CENTER);
     image(this.randomDino, 0, -20, 280, 160);
 
-    // Show time & best time in popup
+    // Show time & best time in popup (use difficulty mapping)
     fill(70);
     textStyle(BOLD);
     textSize(25);
     textAlign(CENTER, CENTER);
     let last = this.levelTime > 0 ? nf(this.levelTime, 0, 2) + "s" : "--";
-    let best = this.bestTimes[`level_${this.level}`] ? nf(this.bestTimes[`level_${this.level}`], 0, 2) + "s" : "--";
+    const bestLevel = this.difficultyToLevel();
+    let best = this.bestTimes[`level_${bestLevel}`] ? nf(this.bestTimes[`level_${bestLevel}`], 0, 2) + "s" : "--";
     text(`Time: ${last}   Best: ${best}`, 0, 70);
 
     // --- BUTTONS ---
-    
+
     // 1. Home (Blue)
     if (this.drawPopupBtn("Home", -150, 125, 100, 50, "#4a90e2")) {
-        this.resetLevel();
-        changePage("main");
+      this.resetLevel();
+      changePage("main");
     }
 
     // 2. Again (Orange)
     if (this.drawPopupBtn("Again", 0, 125, 100, 50, "#f5a623")) {
-        this.resetLevel();
+      this.resetLevel();
     }
 
     // 3. Next (Green)
     if (this.drawPopupBtn("Next", 150, 125, 100, 50, "#69b01cff")) {
-        this.nextLevel();
+      this.nextLevel();
     }
 
     pop();
@@ -531,12 +625,18 @@ class MazePage extends Page {
   // POPUP DRAWER: GAME OVER
   // ------------------------------------------------
   drawGameOverPopup() {
+    // Play lose sound once when the popup first appears
+    if (this.sfx_lose && !this._playedLose) {
+      try { this.sfx_lose.play(); } catch(e) { /* ignore playback errors */ }
+      this._playedLose = true;
+    }
+
     // Darken Background (Red Tint)
     push();
     image(backgroundImg, 0, 0, canvas.x, canvas.y);
     image(mazebg, 0, 0, canvas.x, canvas.y);
     rectMode(CENTER);
-    fill(50, 0, 0, 150); 
+    fill(50, 0, 0, 150);
     rect(canvas.x / 2, canvas.y / 2, canvas.x, canvas.y);
     pop();
 
@@ -560,19 +660,19 @@ class MazePage extends Page {
     textStyle(BOLD);
     text("Oh No!", 0, -110);
     imageMode(CENTER);
-    image(dinolose, 0, 0, 260, 150);
+    image(dinolose, 0, 0, 350, 230);
 
     // --- BUTTONS ---
 
     // 1. Home (Blue)
     if (this.drawPopupBtn("Home", -80, 120, 120, 55, "#4a90e2")) {
-        this.resetLevel();
-        changePage("main");
+      this.resetLevel();
+      changePage("main");
     }
 
     // 2. Try Again (Orange)
     if (this.drawPopupBtn("Retry", 80, 120, 120, 55, "#f5a623")) {
-        this.resetLevel();
+      this.resetLevel();
     }
 
     pop();
