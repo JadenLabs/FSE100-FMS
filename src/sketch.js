@@ -83,6 +83,9 @@ function preload() {
   // dinoGif3 = loadImage("assets/dino3.gif"); // ! Make smaller
   // dinolose = loadImage("assets/dinolose.gif"); // ! Make smaller
   maze3 = loadImage("assets/maze3.png");
+  eggGameIcon = loadImage("assets/eggGameIcon.png");
+  asteroidGameIcon = loadImage("assets/asteroidGameIcon.png");
+  mazeGameIcon = loadImage("assets/mazeGameIcon.png");
 
   // AUDIO ASSETS
   gameBegin = loadSound("assets/audio/gameBegin.mp3");
@@ -96,6 +99,8 @@ function preload() {
   uiButtonClick = loadSound("assets/audio/uiButtonClick.mp3");
   uiButtonHover = loadSound("assets/audio/uiButtonHover.mp3");
   shieldDown = loadSound("assets/audio/shieldDown.mp3");
+  gameMusic = loadSound("assets/audio/gameMusic.mp3");
+  rumbleSound = loadSound("assets/audio/rumble.mp3");
 }
 
 // Drawings to only call once
@@ -127,6 +132,10 @@ function setup() {
 
   rectMode(CENTER);
   textAlign(CENTER, CENTER);
+
+  gameMusic.setLoop(true);
+  gameMusic.play();
+  gameMusic.setVolume(0.2);
 }
 
 // Called every frame update
