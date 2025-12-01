@@ -117,7 +117,7 @@ class EggsPage extends Page {
     }
 
     this.clickables.push(this.MissClickButton);
-    gameBegin.play();
+    gameMusic.play();
   }
 
   createEgg(x, y, w, h) {
