@@ -79,11 +79,12 @@ function preload() {
     maze2 = loadImage("assets/maze2.png");
     eggCracked = loadImage("assets/eggCracked.png");
     egg2 = loadImage("assets/egg2.png");
+    egg3 = loadImage("assets/egg3.png");
     eggBG = loadImage("assets/eggGameBG.png");
-    dinoGif = loadImage("assets/dino.gif");
-    dinoGif2 = loadImage("assets/dino2.gif");
-    dinoGif3 = loadImage("assets/dino3.gif");
-    dinolose = loadImage("assets/dinolose.gif");
+    dinoGif = loadImage("assets/maze1.png");
+    dinoGif2 = loadImage("assets/maze1.png");
+    dinoGif3 = loadImage("assets/maze1.png");
+    dinolose = loadImage("assets/maze2.png");
      maze3 = loadImage("assets/maze3.png");
 }
 
